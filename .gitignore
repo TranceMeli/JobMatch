@@ -1,0 +1,85 @@
+## Streamlined .gitignore for modern .NET projects (GitHub Dotnet.gitignore),
+## ergänzt um SQLite-Laufzeitdateien, lokale Secrets und das React/Vite-Frontend.
+## Get latest .NET part from https://github.com/github/gitignore/blob/main/Dotnet.gitignore
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet Packages
+*.nupkg
+# NuGet Symbol Packages
+*.snupkg
+
+# Others
+~$*
+*~
+CodeCoverage/
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# --- Ergänzungen für JobMatch ---
+
+# SQLite-Laufzeitdateien (werden beim Start neu angelegt und geseedet)
+*.db
+*.db-shm
+*.db-wal
+
+# Lokale Konfiguration mit Secrets (Jwt:Key gehört in dotnet user-secrets, nicht ins Repo)
+appsettings.Development.json
+
+# dotenv environment variables files
+.env
+.env.*
+!.env.example
+
+# Frontend (React / Vite)
+node_modules/
+dist/
+
+# IDE / OS
+.vs/
+*.user
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ASP.NET Configuration mit Secrets
+**/appsettings.json
+**/appsettings.*.json
+
+# Environment Variables
+.env
+.env.*
+!.env.example
