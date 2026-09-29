@@ -1,7 +1,8 @@
+// icon = Material-Symbols-Name (https://fonts.google.com/icons), ersetzt die früheren Emojis.
 export const MOCK_JOBS = [
   {
     id: 1,
-    emoji: '🏗️',
+    icon: 'apartment',
     title: 'Frontend Developer',
     company: 'TechBau GmbH',
     location: 'Karlsruhe',
@@ -12,7 +13,7 @@ export const MOCK_JOBS = [
   },
   {
     id: 2,
-    emoji: '🤖',
+    icon: 'smart_toy',
     title: 'Junior AI Engineer',
     company: 'DataForge AG',
     location: 'Stuttgart (Hybrid)',
@@ -23,7 +24,7 @@ export const MOCK_JOBS = [
   },
   {
     id: 3,
-    emoji: '🎮',
+    icon: 'sports_esports',
     title: 'Game Developer',
     company: 'Pixelkraft Studios',
     location: 'Remote',
@@ -34,7 +35,7 @@ export const MOCK_JOBS = [
   },
   {
     id: 4,
-    emoji: '🏦',
+    icon: 'account_balance',
     title: 'Backend Developer',
     company: 'Finanz-Digital GmbH',
     location: 'Frankfurt',
@@ -45,7 +46,7 @@ export const MOCK_JOBS = [
   },
   {
     id: 5,
-    emoji: '🛒',
+    icon: 'shopping_cart',
     title: 'Full-Stack Entwickler',
     company: 'ShopFlow UG',
     location: 'Karlsruhe',
@@ -59,7 +60,7 @@ export const MOCK_JOBS = [
 export const MOCK_APPLICANTS = [
   {
     id: 1,
-    emoji: '👩‍💻',
+    icon: 'code',
     name: 'Lea Müller',
     title: 'Frontend Developer',
     location: 'Karlsruhe',
@@ -69,7 +70,7 @@ export const MOCK_APPLICANTS = [
   },
   {
     id: 2,
-    emoji: '👨‍🎓',
+    icon: 'school',
     name: 'Tim Becker',
     title: 'Junior Developer (Umschulung)',
     location: 'Stuttgart',
@@ -79,7 +80,7 @@ export const MOCK_APPLICANTS = [
   },
   {
     id: 3,
-    emoji: '🧑‍💼',
+    icon: 'business_center',
     name: 'Marta Kowalski',
     title: 'Full-Stack Entwicklerin',
     location: 'Remote',

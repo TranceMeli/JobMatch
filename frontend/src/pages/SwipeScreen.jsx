@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import SwipeButtons from '../components/SwipeButtons'
 import SwipeCard from '../components/SwipeCard'
+import Icon from '../components/Icon'
 import { MOCK_JOBS, MOCK_APPLICANTS } from '../data/mockData'
 import { useBreakpoint, widthFor } from '../hooks/useBreakpoint'
 
@@ -27,7 +28,7 @@ const styles = {
   profileRole: { fontSize: '12px', color: 'var(--color-text-secondary)' },
   stack:   { position: 'relative', width: '100%', height: '420px' },
   empty: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '420px', gap: '12px', textAlign: 'center' },
-  emptyIcon:  { fontSize: '44px' },
+  emptyIcon:  { color: 'var(--color-highlight-text)' },
   emptyTitle: { fontSize: '18px', fontWeight: '600', color: 'var(--color-text-primary)' },
   emptySub:   { fontSize: '14px', color: 'var(--color-text-secondary)' },
 }
@@ -36,6 +37,7 @@ function getInitials(name = '') {
   return name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)
 }
 
+// role kommt als "User" oder "Admin" vom Backend (Roles.cs), nicht mehr "applicant"/"company".
 export default function SwipeScreen({ role, profile, onLike, liked = [] }) {
   const isJob = role === 'User'
   const cards = isJob ? MOCK_JOBS : MOCK_APPLICANTS
@@ -48,7 +50,7 @@ export default function SwipeScreen({ role, profile, onLike, liked = [] }) {
   const contentWidth = widthFor(bp, { mobile: 360, tablet: 420, desktop: 460 })
   const contentStyle = { width: '100%', maxWidth: `${contentWidth}px`, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }
 
-
+  // role ist bereits exakt "Admin" oder "User" — keine Umbenennung mehr nötig.
   const welcomeLabel = role || 'User'
 
   function onSwipe(dir, card) {
@@ -75,7 +77,9 @@ export default function SwipeScreen({ role, profile, onLike, liked = [] }) {
 
         {profile && (
           <div style={styles.profileBadge}>
-            <div style={styles.avatar}>{isJob ? getInitials(profile.name) : '🏢'}</div>
+            <div style={styles.avatar}>
+              {isJob ? getInitials(profile.name) : <Icon name="apartment" size={16} color="#fff" />}
+            </div>
             <div>
               <div style={styles.profileName}>{profile.name}</div>
               <div style={styles.profileRole}>{profile.jobtitle || profile.industry || ''}</div>
@@ -86,7 +90,7 @@ export default function SwipeScreen({ role, profile, onLike, liked = [] }) {
         <div style={styles.stack}>
           {!canSwipe ? (
             <div style={styles.empty}>
-              <div style={styles.emptyIcon}>🎉</div>
+              <div style={styles.emptyIcon}><Icon name="celebration" size={44} /></div>
               <div style={styles.emptyTitle}>Alle gesehen!</div>
               <div style={styles.emptySub}>Du hast {liked.length} Match{liked.length !== 1 ? 'es' : ''} gemacht.</div>
             </div>

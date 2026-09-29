@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import TinderCard from 'react-tinder-card'
-
+import Icon from './Icon'
 
 const styles = {
   tinderWrapper: { position: 'absolute', width: '100%' },
@@ -17,7 +17,11 @@ const styles = {
     userSelect: 'none',
     boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
   },
-  emoji:       { fontSize: '40px' },
+  iconWrap: {
+    width: '56px', height: '56px', borderRadius: '14px',
+    background: 'var(--color-accent-bg)', color: 'var(--color-accent)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+  },
   title:       { fontSize: '20px', fontWeight: '600', color: 'var(--color-text-primary)' },
   subtitle:    { fontSize: '14px', color: 'var(--color-success)', marginTop: '-4px' },
   tags:        { display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '2px' },
@@ -37,7 +41,7 @@ const styles = {
     paddingTop: '12px',
     borderTop: '1px solid var(--color-border)',
   },
-  location: { fontSize: '13px', color: 'var(--color-text-muted)' },
+  location: { display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px', color: 'var(--color-text-muted)' },
   salary:   { fontSize: '13px', fontWeight: '600', color: 'var(--color-success)' },
 }
 
@@ -51,7 +55,9 @@ const SwipeCard = forwardRef(function SwipeCard({ card, isJob, onSwipe, onCardLe
         preventSwipe={['up', 'down']}
       >
         <div style={styles.card}>
-          <div style={styles.emoji}>{card.emoji}</div>
+          <div style={styles.iconWrap}>
+            <Icon name={card.icon} size={28} />
+          </div>
           <div style={styles.title}>{isJob ? card.title : card.name}</div>
           <div style={styles.subtitle}>{isJob ? card.company : card.title}</div>
           <div style={styles.tags}>
@@ -61,7 +67,7 @@ const SwipeCard = forwardRef(function SwipeCard({ card, isJob, onSwipe, onCardLe
           </div>
           <p style={styles.description}>{card.description}</p>
           <div style={styles.meta}>
-            <span style={styles.location}>📍 {card.location}</span>
+            <span style={styles.location}><Icon name="location_on" size={14} /> {card.location}</span>
             {isJob && card.salary && (
               <span style={styles.salary}>{card.salary}</span>
             )}

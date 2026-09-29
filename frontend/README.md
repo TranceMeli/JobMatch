@@ -1,5 +1,16 @@
 # JobMatch
 
+
+## Screenshots
+
+<img src="src/assets/screenshots/screen_1.png" width="600" alt="JobMatch – Screenshot 1">
+
+<img src="src/assets/screenshots/screen_2.jpeg" width="600" alt="JobMatch – Screenshot 2">
+
+<img src="src/assets/screenshots/screen_3.jpeg" width="600" alt="JobMatch – Screenshot 3">
+
+
+
 ![Status](https://img.shields.io/badge/status-work%20in%20progress-F2A623?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-639922?style=for-the-badge)
 
