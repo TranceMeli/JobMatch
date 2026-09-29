@@ -3,11 +3,9 @@
 
 ## Screenshots
 
-<img src="src/assets/screenshots/screen_1.png" width="600" alt="JobMatch – Screenshot 1">
-
-<img src="src/assets/screenshots/screen_2.jpeg" width="600" alt="JobMatch – Screenshot 2">
-
-<img src="src/assets/screenshots/screen_3.jpeg" width="600" alt="JobMatch – Screenshot 3">
+![alt text](frontend/src/assets/screenshots/screen_1.png)
+![alt text](frontend/src/assets/screenshots/screen_2.jpeg)
+![alt text](frontend/src/assets/screenshots/screen_3.jpeg)
 
 JobMatch ist eine zweiseitige Job-Matching-Plattform, die Arbeitssuchende und Unternehmen anhand ihrer Profile, Fähigkeiten, Präferenzen und Anforderungen zusammenbringt.
 
