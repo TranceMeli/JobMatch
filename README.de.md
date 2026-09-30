@@ -1,6 +1,5 @@
 # JobMatch
 
-
 ## Screenshots
 
 ![alt text](frontend/src/assets/screenshots/screen_1.png)
@@ -43,7 +42,7 @@ Das Ziel besteht nicht nur darin, einen Matching-Score zu liefern, sondern auch 
 * Detaillierte, bearbeitbare Profile mit Angaben zu Fähigkeiten, Erfahrungslevel, Gehaltsvorstellungen, Remote-Präferenzen, Verfügbarkeit, Links und weiteren Informationen.
 * Vorschau des eigenen Profils nach dem Speichern mit der Möglichkeit, jederzeit zur Bearbeitung zurückzukehren.
 * Swipe-Oberfläche zum Durchsuchen passender Stellenangebote oder Kandidaten.
-* Match-Liste mit allen Profilen, die mit „Gefällt mir“ markiert wurden.
+* Match-Liste mit allen Profilen, die mit „Gefällt mir" markiert wurden.
 * Responsives Layout: Auf Mobilgeräten wird die verfügbare Breite genutzt, ab Tablet-Größe wird die Anwendung breiter und zentriert dargestellt.
 
 ## Technologie-Stack
@@ -94,31 +93,91 @@ JobMatch/
 
 ## Erste Schritte
 
-### Backend
+### Voraussetzungen
+
+* .NET SDK 10
+* Node.js 20 oder neuer (npm ist enthalten)
+
+### Bei geklontem Repository
+
+Wenn du dieses Repository geklont hast, kannst du direkt zu [Starten](#starten) springen — alle unten genannten Pakete stehen bereits in `backend.csproj` und `frontend/package.json`, `dotnet restore` bzw. `npm install` holen alles auf einmal.
+
+### Projekte von Grund auf neu anlegen
+
+Nur relevant, wenn du ein Projekt wie dieses komplett neu aufsetzt, statt dieses Repository zu klonen.
+
+**Backend**
+```bash
+dotnet new webapi -controllers -n backend
+cd backend
+```
+Das Flag `-controllers` ist wichtig: Ohne es erzeugt .NET standardmäßig ein Minimal-API-Projekt ohne `Controllers/`-Ordner, den dieser Code aber braucht.
+
+**Frontend**
+```bash
+npm create vite@latest frontend -- --template react
+cd frontend
+```
+
+### Pakete installieren
+
+**Backend (NuGet)**
+```bash
+cd backend
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Swashbuckle.AspNetCore
+```
+
+**Frontend (npm)**
+```bash
+cd frontend
+npm install
+npm install react-tinder-card @react-spring/web --legacy-peer-deps
+```
+`react-tinder-card` steuert die Swipe-Geste und braucht dafür `@react-spring/web` für die Animation, listet es aber nur als optionale Peer-Dependency — deshalb muss es explizit mitinstalliert werden. Das Flag `--legacy-peer-deps` ist nötig, weil die angegebene Peer-Dependency von `react-tinder-card` React 19 noch nicht einschließt; in der Praxis funktioniert es trotz der veralteten Angabe problemlos.
+
+Icons kommen über Material Symbols (Google Fonts), nicht über ein npm-Paket — siehe [Icons](#icons) weiter unten.
+
+### Icons
+
+Material Symbols wird über einen Font-Link eingebunden, nicht per npm-Installation. In `index.html` ergänzen:
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  rel="stylesheet"
+/>
+```
+
+### Konfiguration
 
 ```bash
 cd backend
-dotnet restore
 dotnet user-secrets init
 dotnet user-secrets set "Jwt:Key" "<ein langer zufälliger Wert>"
-dotnet run
 ```
 
-Die Swagger-Benutzeroberfläche ist unter `/swagger` verfügbar, sobald die API läuft.
+### Starten
 
-Beim ersten Start werden zwei Konten mit bereits ausgefüllten Beispielprofilen angelegt:
+**Backend**
+```bash
+cd backend
+dotnet run
+```
+Die Swagger-Benutzeroberfläche ist unter `/swagger` verfügbar, sobald die API läuft. Beim ersten Start werden zwei Konten mit bereits ausgefüllten Beispielprofilen angelegt:
 
 * **Unternehmensseite:** `admin@jobmatch.com` / `Admin123!`
 * **Arbeitssuchendenseite:** `user@jobmatch.com` / `User123!`
 
-### Frontend
-
+**Frontend**
 ```bash
 cd frontend
-npm install --legacy-peer-deps
 npm run dev
 ```
-
 Das Frontend erwartet die API standardmäßig unter `https://localhost:7198`. Dieser Wert kann über die Umgebungsvariable `VITE_API_URL` überschrieben werden.
 
 ## Mitwirken

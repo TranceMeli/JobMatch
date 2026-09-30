@@ -1,6 +1,5 @@
 # JobMatch
 
-
 ## Screenshots
 
 ![alt text](frontend/src/assets/screenshots/screen_1.png)
@@ -101,26 +100,88 @@ JobMatch/
 
 ## Getting Started
 
-### Backend
+### Prerequisites
+
+- .NET SDK 10
+- Node.js 20 or newer (includes npm)
+
+### Cloning this repo
+
+If you cloned this repository, skip straight to [Running](#running) — all packages below are already listed in `backend.csproj` and `frontend/package.json`, so `dotnet restore` and `npm install` pull everything in one go.
+
+### Creating the projects from scratch
+
+Only relevant if you are setting up a project like this one from zero rather than cloning this repo.
+
+**Backend**
+```bash
+dotnet new webapi -controllers -n backend
+cd backend
+```
+The `-controllers` flag matters: without it, .NET scaffolds a Minimal API project without a `Controllers/` folder, which this codebase relies on.
+
+**Frontend**
+```bash
+npm create vite@latest frontend -- --template react
+cd frontend
+```
+
+### Installing packages
+
+**Backend (NuGet)**
+```bash
+cd backend
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Swashbuckle.AspNetCore
+```
+
+**Frontend (npm)**
+```bash
+cd frontend
+npm install
+npm install react-tinder-card @react-spring/web --legacy-peer-deps
+```
+`react-tinder-card` powers the swipe gesture and depends on `@react-spring/web` for its animation, but only lists it as an optional peer dependency, so it needs installing explicitly. The `--legacy-peer-deps` flag is needed because `react-tinder-card`'s declared peer range does not yet include React 19; in practice it works fine despite the outdated metadata.
+
+Icons come from Material Symbols (Google Fonts) rather than an npm package — see [Icons](#icons) below.
+
+### Icons
+
+Material Symbols is loaded via a font link, not an npm install. Add this to `index.html`:
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  rel="stylesheet"
+/>
+```
+
+### Configuration
 
 ```bash
 cd backend
-dotnet restore
 dotnet user-secrets init
 dotnet user-secrets set "Jwt:Key" "<a long random value>"
+```
+
+### Running
+
+**Backend**
+```bash
+cd backend
 dotnet run
 ```
-
 Swagger UI is available at `/swagger` once the API is running. Two accounts are seeded on first start: `admin@jobmatch.com` / `Admin123!` (company side) and `user@jobmatch.com` / `User123!` (job seeker side), both with an example profile already filled in.
 
-### Frontend
-
+**Frontend**
 ```bash
 cd frontend
-npm install --legacy-peer-deps
 npm run dev
 ```
-
 The frontend expects the API at `https://localhost:7198` by default. Set `VITE_API_URL` to override this.
 
 ## Contributing
