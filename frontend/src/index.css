@@ -1,0 +1,118 @@
+:root {
+  /* High-Conversion Palette: #293681, #4274D9, #95CCDD, #D0E7E6 */
+  --text: #4C5980;                      /* Sekundärer Text / Fließtext */
+  --text-h: #121A42;                    /* Primary Text / Überschriften (sehr dunkles Marine) */
+  --bg: #EAEFF2;                        /* Kühler, sauberer Hintergrund */
+  --border: #BCD9DF;                    /* Subtile Trennlinien */
+  --code-bg: #D0E7E6;                   /* Eisblau für Code-Blöcke */
+  
+  --accent: #4274D9;                    /* Primary Action / Königsblau */
+  --accent-bg: rgba(66, 116, 217, 0.12); /* Helles Königsblau für Hintergründe */
+  --accent-border: rgba(66, 116, 217, 0.4); /* Border für Hover/Active States */
+  
+  --social-bg: #D0E7E6;                 /* Filter / Social-Button Background */
+  --shadow:
+    rgba(41, 54, 129, 0.12) 0 10px 15px -3px, rgba(41, 54, 129, 0.06) 0 4px 6px -2px;
+
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #A1B2D1;
+    --text-h: #F0F4FF;
+    --bg: #0F152B;
+    --border: #1E284F;
+    --code-bg: #1B2440;
+    --accent: #6895F2;
+    --accent-bg: rgba(104, 149, 242, 0.18);
+    --accent-border: rgba(104, 149, 242, 0.5);
+    --social-bg: #1B2440;
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  background: #ffffff;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+  color: var(--text-h);
+}
