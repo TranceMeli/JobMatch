@@ -1,30 +1,47 @@
 # JobMatch
 
-## Screenshots
-
-<p align="center">
-  <img src="frontend/src/assets/screenshots/match_screen_1.jpeg" width="45%" />
-  <img src="frontend/src/assets/screenshots/match_screen_2.jpeg" width="45%" />
-</p>
-
-<p align="center">
-  <img src="frontend/src/assets/screenshots/profile_screen_company.jpeg" width="45%" />
-  <img src="frontend/src/assets/screenshots/profile_screen_user.jpeg" width="45%" />
-</p>
-
-<p align="center">
-  <img src="frontend/src/assets/screenshots/questions_screen_company.jpeg" width="45%" />
-  <img src="frontend/src/assets/screenshots/questions_screen_user.jpeg" width="45%" />
-</p>
-
-<p align="center">
-  <img src="frontend/src/assets/screenshots/match_screen_3.jpeg" width="45%" />
-  <img src="frontend/src/assets/screenshots/match_screen_4.jpeg" width="45%" />
-</p>
-
 JobMatch is a two-sided job matching platform that connects job seekers and companies based on their profiles, skills, preferences, and requirements.
 
 This project is open source and actively developed. Issues, pull requests, and ideas are welcome, regardless of experience level.
+
+## Screenshots
+
+The left column shows the job seeker's view, the right column the company's view. The app UI is currently in German.
+
+<table>
+  <tr>
+    <th width="50%">Job seeker</th>
+    <th width="50%">Company</th>
+  </tr>
+  <tr>
+    <td><img src="frontend/src/assets/screenshots/profile_screen_user.jpeg" alt="Job seeker profile preview" /></td>
+    <td><img src="frontend/src/assets/screenshots/profile_screen_company.jpeg" alt="Company profile preview" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><sub>Profile preview: how the profile appears to the other side</sub></td>
+  </tr>
+  <tr>
+    <td><img src="frontend/src/assets/screenshots/questions_screen_user.jpeg" alt="Job seeker questionnaire answers" /></td>
+    <td><img src="frontend/src/assets/screenshots/questions_screen_company.jpeg" alt="Company questionnaire answers" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><sub>Answer overview of the Junior Developer questionnaire</sub></td>
+  </tr>
+  <tr>
+    <td><img src="frontend/src/assets/screenshots/match_screen_1.jpeg" alt="Job seeker swiping a matching company" /></td>
+    <td><img src="frontend/src/assets/screenshots/match_screen_2.jpeg" alt="Company swiping a matching candidate" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><sub>Swipe screen with match score and reasons</sub></td>
+  </tr>
+  <tr>
+    <td><img src="frontend/src/assets/screenshots/match_screen_3.jpeg" alt="Match notification after mutual interest" /></td>
+    <td><img src="frontend/src/assets/screenshots/match_screen_4.jpeg" alt="Match list with unlocked contact" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><sub>Mutual interest creates a match: notification and match list with unlocked contact (company view)</sub></td>
+  </tr>
+</table>
 
 ## Concept
 
