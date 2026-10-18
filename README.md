@@ -6,154 +6,157 @@
   <img src="frontend/src/assets/screenshots/match_screen_1.jpeg" width="45%" />
   <img src="frontend/src/assets/screenshots/match_screen_2.jpeg" width="45%" />
 </p>
+
 <p align="center">
   <img src="frontend/src/assets/screenshots/profile_screen_company.jpeg" width="45%" />
   <img src="frontend/src/assets/screenshots/profile_screen_user.jpeg" width="45%" />
 </p>
+
 <p align="center">
   <img src="frontend/src/assets/screenshots/questions_screen_company.jpeg" width="45%" />
   <img src="frontend/src/assets/screenshots/questions_screen_user.jpeg" width="45%" />
 </p>
+
 <p align="center">
   <img src="frontend/src/assets/screenshots/match_screen_3.jpeg" width="45%" />
   <img src="frontend/src/assets/screenshots/match_screen_4.jpeg" width="45%" />
 </p>
 
-JobMatch ist eine zweiseitige Job-Matching-Plattform, die Arbeitssuchende und Unternehmen anhand ihrer Profile, Fähigkeiten, Präferenzen und Anforderungen zusammenbringt.
+JobMatch is a two-sided job matching platform that connects job seekers and companies based on their profiles, skills, preferences, and requirements.
 
-Dieses Projekt ist Open Source und wird aktiv weiterentwickelt. Issues, Pull Requests und Ideen sind willkommen, unabhängig von der jeweiligen Erfahrung.
+This project is open source and actively developed. Issues, pull requests, and ideas are welcome, regardless of experience level.
 
-## Idee
+## Concept
 
-Anstatt sich bei jedem Unternehmen einzeln bewerben zu müssen, erstellen Arbeitssuchende ein wiederverwendbares Profil, das die typischerweise im Bewerbungsprozess benötigten Informationen enthält.
+Instead of having to apply to each company individually, job seekers create a reusable profile containing the information typically required during the application process.
 
-Unternehmen erstellen ebenfalls eigene Profile und definieren ihre Anforderungen, Erwartungen und Arbeitsbedingungen.
+Companies also create their own profiles and define their requirements, expectations, and working conditions.
 
-Zusätzlich beantworten beide Seiten einen jobbezogenen Fragebogen. Die Antworten bilden eine gemeinsame Grundlage für das Matching und machen die Anforderungen und Erwartungen beider Seiten besser vergleichbar.
+In addition, both sides complete a job-specific questionnaire. The answers provide a common basis for matching and make the requirements and expectations of both sides easier to compare.
 
-Die Plattform vergleicht beide Seiten und identifiziert passende Übereinstimmungen.
+The platform compares both sides and identifies suitable matches.
 
 ```text
-Bewerberprofil
+Job Seeker Profile
      │
      ▼
-  Fragebogen ───────┐
-                    │
-                    ▼
-              Matching-Engine
-                    ▲
-                    │
-  Fragebogen ───────┘
+  Questionnaire ───────┐
+                       │
+                       ▼
+                 Matching Engine
+                       ▲
+                       │
+  Questionnaire ───────┘
      ▲
      │
-Unternehmensprofil
+Company Profile
      │
      ▼
-Übereinstimmung
+     Match
 ```
 
-Das Ziel besteht nicht nur darin, einen Matching-Score zu liefern, sondern auch nachvollziehbar zu machen, warum zwei Profile zueinander passen.
+The goal is not only to provide a matching score, but also to make it understandable why two profiles are a good fit.
 
-Ein Match entsteht, wenn beide Seiten Interesse bekunden. Die konkrete Interaktion muss dabei nicht auf einem Swipe-Prinzip basieren. Swipen ist lediglich eine mögliche Benutzeroberfläche, um Interesse auszudrücken.
+A match is created when both sides express interest. The interaction does not have to rely on a swipe-based principle. Swiping is simply one possible user interface for expressing interest.
 
-## Funktionen
+## Features
 
-* Kontosystem mit zwei Rollen: Admin (Unternehmen) und User (Arbeitssuchende)
-* Registrierung und Login mit JWT-Authentifizierung
-* Kurzlebige Access-Tokens und rotierende Refresh-Tokens über HttpOnly-Cookies
-* Erkennung einer erneuten Verwendung bereits verbrauchter Refresh-Tokens
-* Detaillierte, bearbeitbare Profile
-* Angaben zu Fähigkeiten, Erfahrungslevel, Gehaltsvorstellungen, Remote-Präferenzen, Verfügbarkeit, Links und weiteren Informationen
-* Jobbezogene Fragebögen für Bewerber und Unternehmen
-* Erste unterstützte Jobkategorie: **Junior Developer**
-* Vollständige Übersicht der bereits beantworteten Fragen
-* Möglichkeit, Antworten nachträglich zu bearbeiten
-* Matching-Engine zum Vergleich der Antworten beider Seiten
-* Gewichtung verschiedener Matching-Kriterien
-* Nachvollziehbarer Match-Score mit Begründungen
-* Gegenseitiges Interessenmodell
-* Ein tatsächliches Match entsteht erst, wenn beide Seiten Interesse zeigen
-* Swipe-Oberfläche zum Durchsuchen passender Profile
-* Match-Liste mit freigeschaltetem Kontakt nach gegenseitigem Interesse
-* Responsives Layout für Desktop, Tablet und mobile Geräte
+* Account system with two roles: Admin (companies) and User (job seekers)
+* Registration and login with JWT authentication
+* Short-lived access tokens and rotating refresh tokens using HttpOnly cookies
+* Detection of reuse of already consumed refresh tokens
+* Detailed, editable profiles
+* Information about skills, experience level, salary expectations, remote preferences, availability, links, and other details
+* Job-specific questionnaires for job seekers and companies
+* First supported job category: **Junior Developer**
+* Complete overview of previously answered questions
+* Ability to edit answers afterwards
+* Matching engine for comparing answers from both sides
+* Weighted matching criteria
+* Transparent match score with explanations
+* Mutual interest model
+* A real match is only created when both sides express interest
+* Swipe interface for browsing suitable profiles
+* Match list with contact unlocked after mutual interest
+* Responsive layout for desktop, tablet, and mobile devices
 
-## Fragebogen und Matching
+## Questionnaire and Matching
 
-JobMatch setzt beim Matching nicht ausschließlich auf klassische Profildaten.
+JobMatch does not rely exclusively on traditional profile data for matching.
 
-Bewerber und Unternehmen beantworten einen eigenen Fragebogen für die jeweilige Jobkategorie. Dadurch können nicht nur technische Fähigkeiten, sondern auch Erwartungen an die Zusammenarbeit miteinander verglichen werden.
+Job seekers and companies complete their own questionnaire for the selected job category. This makes it possible to compare not only technical skills, but also expectations regarding collaboration.
 
-Für die Kategorie **Junior Developer** werden unter anderem folgende Bereiche berücksichtigt:
+For the **Junior Developer** category, the following areas are taken into account, among others:
 
-* Technologien und technische Interessen
-* Entwicklungsbereiche
-* Arbeitsmodell
-* Teamarbeit
-* Eigenverantwortung
-* Einarbeitung und Mentoring
-* Code Reviews
-* Arbeitsweise
-* Weiterbildungs- und Entwicklungsmöglichkeiten
-* angebotene Projekte und Aufgaben
-* Erwartungen an Bewerber bzw. Arbeitgeber
+* Technologies and technical interests
+* Development areas
+* Work model
+* Teamwork
+* Personal responsibility and autonomy
+* Onboarding and mentoring
+* Code reviews
+* Working style
+* Training and development opportunities
+* Offered projects and tasks
+* Expectations towards job seekers and employers
 
-Die Antworten werden miteinander verglichen und in einen Match-Score überführt.
+The answers are compared and converted into a match score.
 
-Dabei werden unterschiedliche Kriterien gewichtet, damit wichtige Aspekte stärker in das Matching einfließen können.
+Different criteria can be weighted so that important aspects have a stronger influence on the matching result.
 
-Zusätzlich werden Gründe für die Übereinstimmung angezeigt, damit das Ergebnis nachvollziehbar bleibt.
+In addition, reasons for the match are displayed so that the result remains understandable.
 
-Persönliche Fragen dienen der zusätzlichen Information über die jeweilige Seite und werden nicht direkt in den numerischen Match-Score einbezogen.
+Personal questions provide additional information about the respective side and are not directly included in the numerical match score.
 
-### Antwortenübersicht
+### Answer Overview
 
-Nach dem Ausfüllen des Fragebogens können die eigenen Antworten jederzeit als Übersicht eingesehen werden.
+After completing the questionnaire, users can view their answers at any time in a dedicated overview.
 
-Die Übersicht zeigt:
+The overview displays:
 
-* alle Fragen des ausgewählten Fragebogens
-* die jeweils gespeicherte Antwort
-* Mehrfachauswahlen
-* Skalenwerte
-* die Möglichkeit, den Fragebogen erneut zu bearbeiten
+* All questions of the selected questionnaire
+* The corresponding saved answer
+* Multiple-choice selections
+* Scale values
+* The option to edit the questionnaire again
 
-Dadurch bleibt transparent, welche Angaben aktuell für das Matching verwendet werden.
+This keeps it transparent which information is currently stored and used for matching.
 
-## Ablauf
+## Application Flow
 
-Der aktuelle Ablauf der Anwendung ist:
+The current application flow is:
 
 ```text
-Registrierung / Login
+Registration / Login
         │
         ▼
-     Profil
+     Profile
         │
         ▼
- Jobkategorie auswählen
+ Select Job Category
         │
         ▼
- Fragebogen beantworten
+ Complete Questionnaire
         │
         ▼
- Antwortenübersicht
+   Answer Overview
         │
-        ├── Antworten bearbeiten
-        │
-        ▼
- Passende Profile
+        ├── Edit Answers
         │
         ▼
- Interesse zeigen
+ Matching Profiles
         │
         ▼
- Gegenseitiges Interesse
+   Show Interest
+        │
+        ▼
+  Mutual Interest
         │
         ▼
        Match
 ```
 
-## Technologie-Stack
+## Technology Stack
 
 ### Frontend
 
@@ -164,76 +167,101 @@ Registrierung / Login
 
 ### Backend
 
-* ASP.NET Core Web API auf .NET 10
-* Controller-basierte Architektur
+* ASP.NET Core Web API on .NET 10
+* Controller-based architecture
 * Entity Framework Core
 * SQLite
 * ASP.NET Core Identity
-* JWT Access-Tokens
-* Rotierende Refresh-Tokens
-* HttpOnly-Cookies
+* JWT access tokens
+* Rotating refresh tokens
+* HttpOnly cookies
 * Swagger / OpenAPI
 
 ## Design
 
-Farbpalette:
+### Color Palette
 
-[Color Hunt – #293681, #4274D9, #95CCDD, #D0E7E6](https://colorhunt.co/palette/f5f7f8f4ce14495e5745474b)
+The user interface uses a consistent color palette. The following colors correspond to the CSS variables used in the frontend:
 
-Interaktive Zustände wie Hover-Effekte, Farbabstufungen und barrierefreie Textvarianten werden durch HSL-Anpassungen aus der Basisfarbpalette abgeleitet, anstatt zusätzliche, unabhängig festgelegte Farben zu verwenden.
+| Preview | CSS Variable | Color Code | Usage |
+|:---:|---|:---:|---|
+| 🔵 | `--color-accent` | `#4274D9` | Primary accent for buttons, links, and active states |
+| 🟦 | `--color-accent-hover` | `#293681` | Hover state of primary buttons |
+| ⬜ | `--color-accent-bg` | `#EAF0FC` | Hover and selected states |
+| 🩵 | `--color-highlight` | `#95CCDD` | Background for tags and badges |
+| 🟦 | `--color-highlight-text` | `#293681` | Text on tags and badges |
+| 🩶 | `--color-surface-subtle` | `#D0E7E6` | Subtle surfaces, containers, and filters |
+| 🩶 | `--color-chip-bg` | `#D0E7E6` | Chip and filter background |
+| ⬜ | `--color-bg` | `#EAEFF2` | Page background |
+| ⬜ | `--color-surface` | `#FFFFFF` | Cards, containers, and other surfaces |
+| ◻️ | `--color-border` | `#BCD9DF` | Borders and subtle separators |
+| 🩵 | `--color-border-strong` | `#95CCDD` | More prominent separators |
+| 🔷 | `--color-text-primary` | `#121A42` | Primary text |
+| 🟦 | `--color-text-secondary` | `#293681` | Secondary text, labels, and subheadings |
+| 🔹 | `--color-text-muted` | `#5C77A5` | Muted text and supporting information |
+| 🟦 | `--color-success` | `#293681` | Success messages and positive status indicators |
+| 🟩 | `--color-success-bg` | `#E2F4EB` | Background for success messages |
+| 🔴 | `--color-danger` | `#D93838` | Error and warning states |
+| 🟥 | `--color-danger-bg` | `#FCE8E8` | Background for error and warning messages |
 
-## Projektstruktur
+The core colors of the design are dark blue (`#293681`), blue (`#4274D9`), light ice blue (`#95CCDD`), and a very light blue-green tone (`#D0E7E6`). Success and error colors are used separately for status states.
+
+Interactive states such as hover effects and selected items use dedicated variants (e.g. `--color-accent-hover`, `--color-accent-bg`) derived from this base palette instead of introducing unrelated colors.
+
+## Project Structure
 
 ```text
 JobMatch/
 ├── backend/
 │   ├── Program.cs
 │   ├── Data/
-│   │   └── AppDbContext, DbSeeder, Demo-Profildaten
+│   │   └── AppDbContext, DbSeeder, Demo Profile Data
 │   ├── Entities/
-│   │   └── Identity-Entities, Profile, QuestionnaireResponse, Interest
+│   │   └── Identity Entities, Profile, QuestionnaireResponse, Interest
 │   ├── Auth/
 │   │   └── ITokenService, TokenService, JwtSettings
 │   ├── Models/
-│   │   └── Auth- und Questionnaire-DTOs
+│   │   └── Authentication and Questionnaire DTOs
 │   ├── Services/
-│   │   └── Question-Katalog und Matching-Engine
-│   └── Controllers/
-│       └── Auth-, Profile-, Questionnaire- und Matching-APIs
+│   │   └── Question Catalog and Matching Engine
+│   └── Controller/
+│       └── Authentication, Profile, Questionnaire and Matching APIs
 │
 └── frontend/
     └── src/
         ├── components/
         │   └── Navbar, SwipeCard, TagInput, ToggleGroup, Icon, ...
         ├── pages/
-        │   └── AuthForm, ProfileForm, ProfileCard,
-        │       QuestionnaireOverview, SwipeScreen, Matches
+        │   └── AuthForm, ProfileForm, ProfileCard, JobTypeSelect,
+        │       QuestionnairePage, QuestionnaireOverview, SwipeScreen, Matches
         ├── hooks/
-        │   └── useBreakpoint
+        │   └── useBreakpoint, useSwipe
+        ├── styles/
+        │   └── global.css (color palette and base styles)
         ├── data/
-        │   └── Mock-Daten für Stellenangebote und Kandidaten
+        │   └── Mock data for job offers and candidates
         ├── api.js
-        │   └── API-Kommunikation und Authentifizierung
+        │   └── API communication and authentication
         └── App.jsx
 ```
 
-## Erste Schritte
+## Getting Started
 
-### Voraussetzungen
+### Prerequisites
 
 * .NET SDK 10
-* Node.js 20 oder neuer
+* Node.js 20 or newer
 * npm
 
-### Bei geklontem Repository
+### Using the Cloned Repository
 
-Wenn du dieses Repository geklont hast, kannst du direkt zu [Starten](#starten) springen.
+If you have cloned this repository, you can go directly to [Running the Application](#running-the-application).
 
-Alle benötigten Pakete sind bereits in `backend.csproj` und `frontend/package.json` definiert.
+All required packages are already defined in `backend.csproj` and `frontend/package.json`.
 
-### Projekte von Grund auf neu anlegen
+### Creating the Projects from Scratch
 
-Nur relevant, wenn du ein Projekt wie dieses komplett neu aufsetzt, statt dieses Repository zu klonen.
+Only relevant if you are setting up a project like this from scratch instead of cloning this repository.
 
 #### Backend
 
@@ -242,7 +270,7 @@ dotnet new webapi -controllers -n backend
 cd backend
 ```
 
-Das Flag `-controllers` ist wichtig. Ohne dieses Flag erzeugt .NET standardmäßig ein Minimal-API-Projekt ohne `Controllers/`-Ordner.
+The `-controllers` flag is important. Without it, .NET creates a Minimal API project without a `Controllers/` folder by default.
 
 #### Frontend
 
@@ -251,7 +279,7 @@ npm create vite@latest frontend -- --template react
 cd frontend
 ```
 
-## Pakete installieren
+## Installing Packages
 
 ### Backend
 
@@ -272,15 +300,15 @@ npm install
 npm install react-tinder-card @react-spring/web --legacy-peer-deps
 ```
 
-`react-tinder-card` steuert die Swipe-Geste und benötigt `@react-spring/web` für die Animation.
+`react-tinder-card` handles the swipe gesture and requires `@react-spring/web` for the animation.
 
-Das Flag `--legacy-peer-deps` ist nötig, weil die angegebene Peer-Dependency von `react-tinder-card` React 19 noch nicht einschließt.
+The `--legacy-peer-deps` flag is required because the declared peer dependency of `react-tinder-card` does not yet include React 19.
 
 ## Icons
 
-Material Symbols wird über Google Fonts eingebunden und nicht über ein npm-Paket installiert.
+Material Symbols are loaded through Google Fonts and are not installed as an npm package.
 
-In `index.html` ergänzen:
+Add the following to `index.html`:
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -291,19 +319,19 @@ In `index.html` ergänzen:
 />
 ```
 
-## Konfiguration
+## Configuration
 
-Für den JWT-Schlüssel können ASP.NET Core User Secrets verwendet werden:
+ASP.NET Core User Secrets can be used for the JWT key:
 
 ```bash
 cd backend
 dotnet user-secrets init
-dotnet user-secrets set "Jwt:Key" "<ein langer zufälliger Wert>"
+dotnet user-secrets set "Jwt:Key" "<a long random value>"
 ```
 
-Der JWT-Schlüssel sollte nicht direkt im Repository gespeichert werden.
+The JWT key should not be stored directly in the repository.
 
-## Starten
+## Running the Application
 
 ### Backend
 
@@ -312,12 +340,12 @@ cd backend
 dotnet run
 ```
 
-Die Swagger-Benutzeroberfläche ist unter `/swagger` verfügbar, sobald die API läuft.
+The Swagger user interface is available at `/swagger` once the API is running.
 
-Beim ersten Start werden zwei Konten mit bereits ausgefüllten Beispielprofilen angelegt:
+On the first start, two accounts with pre-filled example profiles are created:
 
-* **Unternehmensseite:** `admin@jobmatch.com` / `Admin123!`
-* **Arbeitssuchendenseite:** `user@jobmatch.com` / `User123!`
+* **Company account:** `admin@jobmatch.com` / `Admin123!`
+* **Job seeker account:** `user@jobmatch.com` / `User123!`
 
 ### Frontend
 
@@ -326,46 +354,46 @@ cd frontend
 npm run dev
 ```
 
-Das Frontend erwartet die API standardmäßig unter:
+By default, the frontend expects the API at:
 
 ```text
 http://localhost:5254
 ```
 
-Dieser Wert kann über die Umgebungsvariable `VITE_API_URL` überschrieben werden.
+This value can be overridden using the `VITE_API_URL` environment variable.
 
-Beispiel:
+Example:
 
 ```text
 VITE_API_URL=http://localhost:5254
 ```
 
-## Mitwirken
+## Contributing
 
-JobMatch befindet sich in aktiver Entwicklung und ist offen für Beiträge von allen Interessierten.
+JobMatch is actively developed and open to contributions from anyone interested.
 
-Ob Fehlerbehebung, neue Funktion, Verbesserung der Testabdeckung oder Erweiterung der Dokumentation: Pull Requests sind willkommen.
+Whether it is bug fixing, a new feature, improved test coverage, or documentation improvements, pull requests are welcome.
 
-Wenn du nicht sicher bist, wo du anfangen sollst, eröffne ein Issue und beschreibe, woran du arbeiten möchtest, oder stelle eine Frage.
+If you are not sure where to start, open an issue and describe what you would like to work on, or ask a question.
 
 ### Pull Request
 
-1. Repository forken
-2. Einen Branch für die Änderungen erstellen
-3. Änderungen implementieren und testen
-4. Einen Pull Request mit einer Beschreibung der Änderungen und ihrer Motivation eröffnen
+1. Fork the repository
+2. Create a branch for your changes
+3. Implement and test your changes
+4. Open a pull request with a description of the changes and their motivation
 
 ## Roadmap
 
-* Weitere Jobkategorien und eigene Question Sets
-* Erweiterung des Matching-Scores um zusätzliche Profilkriterien wie Erfahrung, Gehalt und Standort
-* Detailliertere Match-Begründungen und Gewichtungen pro Jobkategorie
-* Erweiterung des Kontakt- und Bewerbungsprozesses nach einem Match
-* Echte Stellenverwaltung mit mehreren offenen Positionen pro Unternehmen
-* Erweiterung der Matching-Logik um weitere Profil- und Präferenzdaten
+* Additional job categories and dedicated question sets
+* Extending the matching score with additional profile criteria such as experience, salary, and location
+* More detailed match explanations and category-specific weighting
+* Extending the contact and application process after a match
+* Real job management with multiple open positions per company
+* Extending the matching logic with additional profile and preference data
 
-## Lizenz
+## License
 
-Dieses Projekt steht unter der MIT-Lizenz.
+This project is licensed under the MIT License.
 
-Weitere Informationen findest du in der Datei `LICENSE`.
+For more information, see the `LICENSE` file.

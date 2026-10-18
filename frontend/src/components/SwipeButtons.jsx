@@ -27,13 +27,13 @@ const styles = {
   super: {
     background: 'var(--color-accent)',
     color: '#fff',
-    boxShadow: '0 4px 14px hsla(160, 13%, 33%, 0.35)',
+    boxShadow: '0 4px 14px hsla(220, 67%, 55%, 0.35)',
   },
 
   like: {
     background: 'var(--color-highlight)',
     color: 'var(--color-highlight-text)',
-    boxShadow: '0 4px 14px hsla(50, 91%, 52%, 0.35)',
+    boxShadow: '0 4px 14px hsla(194, 50%, 50%, 0.35)',
   },
 }
 
