@@ -210,6 +210,34 @@ public class MatchingController : ControllerBase
         });
     }
 
+    [HttpDelete("interest")]
+    public async Task<IActionResult> UndoInterest([FromQuery] string targetUserId, [FromQuery] string jobType)
+    {
+        var interest = await _db.Interests
+            .FirstOrDefaultAsync(x =>
+                x.FromUserId == UserId &&
+                x.ToUserId == targetUserId &&
+                x.JobType.ToLower() == jobType.ToLower());
+
+        if (interest is null)
+            return NotFound(new { error = "Diese Bewertung wurde nicht gefunden." });
+
+        // Ein bestehendes Match wird nicht stillschweigend aufgelöst
+        var isMatch = interest.IsPositive && await _db.Interests.AnyAsync(x =>
+            x.FromUserId == targetUserId &&
+            x.ToUserId == UserId &&
+            x.JobType == interest.JobType &&
+            x.IsPositive);
+
+        if (isMatch)
+            return Conflict(new { error = "Aus dieser Bewertung ist bereits ein Match entstanden." });
+
+        _db.Interests.Remove(interest);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     [HttpGet("matches")]
     public async Task<IActionResult> GetMatches()
     {

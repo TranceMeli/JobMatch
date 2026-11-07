@@ -31,7 +31,6 @@ export default function App() {
   const [matches, setMatches] = useState([])
   const [loading, setLoading] = useState(true)
   const [saveError, setSaveError] = useState(null)
-  const [matchNotice, setMatchNotice] = useState(null)
 
   async function loadUserData() {
     const saved = await loadProfile()
@@ -108,22 +107,22 @@ export default function App() {
     }
   }
 
+  // Gibt das Ergebnis zurück, damit die Swipe-Ansicht ein Match direkt anzeigen kann
   async function onInterest(targetUserId, positive) {
-    if (!jobType) return
+    if (!jobType) return null
 
     try {
       const result = await setInterest(targetUserId, jobType, positive)
 
       if (result.matched) {
-        setMatchNotice({
-          score: result.matchScore,
-          reasons: result.matchReasons || [],
-        })
         const savedMatches = await getMatches()
         setMatches(savedMatches || [])
       }
+
+      return result
     } catch (err) {
-      setSaveError(err.message || 'Interesse konnte nicht gespeichert werden.')
+      setSaveError(err.message || 'Deine Bewertung konnte nicht gespeichert werden. Versuche es erneut.')
+      return null
     }
   }
 
@@ -135,12 +134,17 @@ export default function App() {
       setProfile(null)
       setJobType(null)
       setMatches([])
-      setMatchNotice(null)
       setView('auth')
     }
   }
 
-  if (loading) return null
+  if (loading) {
+    return (
+      <div aria-busy="true" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-secondary)', fontSize: '14px' }}>
+        JobMatch wird geladen …
+      </div>
+    )
+  }
 
   const showNav = view !== 'auth'
 
@@ -217,72 +221,46 @@ export default function App() {
       {view === 'swipe' && jobType && (
         <SwipeScreen
           role={user?.role}
-          profile={profile}
           jobType={jobType}
           onInterest={onInterest}
+          onShowMatches={() => setView('matches')}
         />
       )}
 
       {view === 'matches' && <Matches refreshKey={matches.length} />}
 
       {saveError && (
-        <div style={{
-          position: 'fixed',
-          bottom: '16px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'var(--color-danger-bg)',
-          color: 'var(--color-danger)',
-          padding: '8px 16px',
-          borderRadius: 'var(--radius)',
-          fontSize: '13px',
-          border: '1px solid var(--color-danger)',
-          maxWidth: '90%',
-          textAlign: 'center',
-          zIndex: 30,
-        }}>
-          {saveError}
-        </div>
-      )}
-
-      {matchNotice && (
         <div
+          role="alert"
           style={{
             position: 'fixed',
+            bottom: '16px',
             left: '50%',
-            bottom: saveError ? '64px' : '16px',
             transform: 'translateX(-50%)',
-            width: 'min(460px, 90%)',
-            padding: '14px 16px',
-            borderRadius: 'var(--radius-card)',
-            background: 'var(--color-highlight)',
-            color: 'var(--color-highlight-text)',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-            zIndex: 29,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            background: 'var(--color-danger-bg)',
+            color: 'var(--color-danger-text)',
+            padding: '8px 8px 8px 16px',
+            borderRadius: 'var(--radius)',
+            fontSize: '13px',
+            border: '1px solid var(--color-danger)',
+            maxWidth: '90%',
+            zIndex: 30,
           }}
         >
-          <div style={{ fontWeight: '700', marginBottom: '4px' }}>
-            🎉 Ihr habt ein Match!
-          </div>
-          <div style={{ fontSize: '13px' }}>
-            {matchNotice.score != null ? `${matchNotice.score} % Match` : 'Beide Seiten haben Interesse.'}
-          </div>
-          {matchNotice.reasons?.length > 0 && (
-            <div style={{ marginTop: '6px', fontSize: '12px', lineHeight: '1.5' }}>
-              {matchNotice.reasons.join(' · ')}
-            </div>
-          )}
+          {saveError}
           <button
             type="button"
-            onClick={() => setMatchNotice(null)}
+            onClick={() => setSaveError(null)}
             style={{
-              marginTop: '10px',
               border: 'none',
               background: 'transparent',
-              fontSize: '12px',
-              fontWeight: '600',
               color: 'inherit',
-              padding: 0,
+              fontSize: '13px',
+              fontWeight: '600',
+              padding: '6px 8px',
             }}
           >
             Schließen

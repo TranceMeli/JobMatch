@@ -20,7 +20,7 @@
   --color-text-muted: #5C77A5;         /* Dezent abgedunkelter Farbton für Hilfstexte */
 
   /* Primäre Interaktionen / Akzente (CTA Buttons, Aktive States) */
-  --color-accent: #4274D9;             /* Kräftiges Königsblau für Haupt-Buttons */
+  --color-accent: #3168D6;             /* Königsblau für Haupt-Buttons (5.1:1 mit weißer Schrift, WCAG AA) */
   --color-accent-bg: #EAF0FC;          /* Sehr helles Blau für Hover-States / Selected Items */
   --color-accent-hover: #293681;       /* Dunkleres Blau bei Button-Hover */
 
@@ -39,6 +39,11 @@
   --color-danger: #D93838;
   --color-danger-bg: #FCE8E8;
   --color-danger-hover: #A82525;
+  --color-danger-text: #A82525;        /* Fehlertext auf --color-danger-bg (6:1) */
+
+  /* Fokus & Bewegung */
+  --focus-ring: 2px solid var(--color-accent-hover);
+  --duration-fast: 150ms;
 
   --radius: 8px;
   --radius-card: 16px;
@@ -83,6 +88,34 @@ button {
 
 input, textarea, select {
   font-family: inherit;
+}
+
+/* Sichtbarer Tastaturfokus überall – überschreibt auch inline gesetztes outline: none */
+:focus-visible {
+  outline: var(--focus-ring) !important;
+  outline-offset: 2px;
+}
+
+/* Programmatisch fokussierte Überschriften (tabIndex -1) brauchen keinen Rahmen */
+[tabindex="-1"]:focus-visible {
+  outline: none !important;
+}
+
+/* Nur für Screenreader sichtbar */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 .material-symbols-outlined {

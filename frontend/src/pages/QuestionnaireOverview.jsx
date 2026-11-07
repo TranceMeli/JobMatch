@@ -4,6 +4,7 @@ import {
   getQuestionnaire,
   getQuestionnaireAnswers,
 } from '../api'
+import Icon from '../components/Icon'
 
 const styles = {
   screen: {
@@ -21,12 +22,40 @@ const styles = {
     padding: '28px',
     boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   },
+  titleRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '12px',
+    flexWrap: 'wrap',
+    marginBottom: '6px',
+  },
   title: {
     fontSize: '22px',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
-    marginBottom: '6px',
   },
+  section: {
+    border: '1px solid var(--color-border)',
+    borderRadius: 'var(--radius)',
+    padding: '16px 18px 0',
+    marginBottom: '14px',
+  },
+  sectionHead: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '12px',
+    border: 'none',
+    background: 'transparent',
+    padding: 0,
+    textAlign: 'left',
+    color: 'var(--color-text-primary)',
+    marginBottom: '14px',
+  },
+  sectionTitle: { fontSize: '16px', fontWeight: '600' },
+  sectionHint: { fontSize: '13px', fontWeight: '400', color: 'var(--color-text-secondary)', marginTop: '2px' },
   subtitle: {
     fontSize: '14px',
     color: 'var(--color-text-secondary)',
@@ -72,16 +101,14 @@ const styles = {
     marginTop: '24px',
     flexWrap: 'wrap',
   },
-  primary: {
-    flex: '1 1 220px',
-    padding: '12px 14px',
+  editBtn: {
+    padding: '9px 16px',
     borderRadius: 'var(--radius)',
     border: 'none',
     background: 'var(--color-accent)',
     color: '#fff',
     fontSize: '14px',
     fontWeight: '600',
-    cursor: 'pointer',
   },
   secondary: {
     flex: '1 1 160px',
@@ -99,7 +126,7 @@ const styles = {
     borderRadius: 'var(--radius)',
     border: '1px solid var(--color-danger)',
     background: 'var(--color-danger-bg)',
-    color: 'var(--color-danger)',
+    color: 'var(--color-danger-text)',
     fontSize: '13px',
     marginBottom: '18px',
   },
@@ -109,13 +136,17 @@ const styles = {
   },
 }
 
-function formatAnswer(question, value) {
-  if (
+function isAnswered(value) {
+  return !(
     value === undefined ||
     value === null ||
     value === '' ||
     (Array.isArray(value) && value.length === 0)
-  ) {
+  )
+}
+
+function formatAnswer(question, value) {
+  if (!isAnswered(value)) {
     return 'Keine Antwort hinterlegt.'
   }
 
@@ -141,6 +172,7 @@ export default function QuestionnaireOverview({
   const [updatedAt, setUpdatedAt] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [personalOpen, setPersonalOpen] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -198,54 +230,79 @@ export default function QuestionnaireOverview({
 
   const isApplicant = role === 'User'
 
+  // Freitext-Fragen sind persönliche Angaben und fließen nicht in den Match-Score ein
+  const scoredQuestions = questions.filter((q) => q.type !== 'text')
+  const personalQuestions = questions.filter((q) => q.type === 'text')
+  const answeredCount = questions.filter((q) => isAnswered(answers[q.key])).length
+
+  function renderQuestion(question) {
+    return (
+      <div key={question.key} style={styles.group}>
+        <div style={styles.question}>{question.text}</div>
+        <div style={styles.answer}>
+          {formatAnswer(question, answers[question.key])}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={styles.screen}>
       <div style={styles.card}>
-        <div style={styles.title}>Meine Antworten</div>
+        <div style={styles.titleRow}>
+          <h1 style={styles.title}>{isApplicant ? 'Deine Antworten' : 'Eure Antworten'}</h1>
+          <button type="button" style={styles.editBtn} onClick={onEdit}>
+            Bearbeiten
+          </button>
+        </div>
 
         <div style={styles.subtitle}>
-          {isApplicant
-            ? 'Hier siehst du deine gespeicherten Antworten für diese Jobkategorie. Du kannst sie jederzeit bearbeiten.'
-            : 'Hier seht ihr die gespeicherten Antworten für diese Jobkategorie. Ihr könnt sie jederzeit bearbeiten.'}
+          {answeredCount} von {questions.length} Fragen beantwortet
+          {updatedAt && ` · zuletzt geändert am ${new Date(updatedAt).toLocaleDateString('de-DE')}`}
         </div>
 
         <div style={styles.meta}>{jobType}</div>
 
-        {updatedAt && (
-          <div
-            style={{
-              fontSize: '12px',
-              color: 'var(--color-text-muted)',
-              marginBottom: '22px',
-            }}
-          >
-            Zuletzt aktualisiert:{' '}
-            {new Date(updatedAt).toLocaleString('de-DE')}
-          </div>
+        {error && <div style={styles.error} role="alert">{error}</div>}
+
+        {!error && (
+          <>
+            <section style={styles.section} aria-labelledby="scored-title">
+              <div style={{ ...styles.sectionHead, cursor: 'default' }}>
+                <div>
+                  <h2 id="scored-title" style={styles.sectionTitle}>Fließt ins Matching ein</h2>
+                  <div style={styles.sectionHint}>Diese Antworten bestimmen den Match-Score.</div>
+                </div>
+              </div>
+              {scoredQuestions.map(renderQuestion)}
+            </section>
+
+            {personalQuestions.length > 0 && (
+              <section style={styles.section} aria-labelledby="personal-title">
+                <button
+                  type="button"
+                  style={styles.sectionHead}
+                  aria-expanded={personalOpen}
+                  aria-controls="personal-answers"
+                  onClick={() => setPersonalOpen((open) => !open)}
+                >
+                  <div>
+                    <h2 id="personal-title" style={styles.sectionTitle}>
+                      Persönliche Fragen ({personalQuestions.length})
+                    </h2>
+                    <div style={styles.sectionHint}>Nicht Teil des Match-Scores – zeigt dem Gegenüber mehr über {isApplicant ? 'dich' : 'euch'}.</div>
+                  </div>
+                  <Icon name={personalOpen ? 'expand_less' : 'expand_more'} size={24} />
+                </button>
+                <div id="personal-answers" hidden={!personalOpen}>
+                  {personalQuestions.map(renderQuestion)}
+                </div>
+              </section>
+            )}
+          </>
         )}
 
-        {error && <div style={styles.error}>{error}</div>}
-
-        {!error &&
-          questions.map((question) => (
-            <div key={question.key} style={styles.group}>
-              <div style={styles.question}>{question.text}</div>
-
-              <div style={styles.answer}>
-                {formatAnswer(question, answers[question.key])}
-              </div>
-            </div>
-          ))}
-
         <div style={styles.actions}>
-          <button
-            type="button"
-            style={styles.primary}
-            onClick={onEdit}
-          >
-            Antworten bearbeiten →
-          </button>
-
           <button
             type="button"
             style={styles.secondary}

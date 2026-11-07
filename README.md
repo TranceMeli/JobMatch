@@ -25,21 +25,21 @@ The left column shows the job seeker's view, the right column the company's view
     <td><img src="frontend/src/assets/screenshots/questions_screen_company.jpeg" alt="Company questionnaire answers" /></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><sub>Answer overview of the Junior Developer questionnaire</sub></td>
+    <td colspan="2" align="center"><sub>Answer overview: answers that drive the match score first, personal questions collapsed</sub></td>
   </tr>
   <tr>
     <td><img src="frontend/src/assets/screenshots/match_screen_1.jpeg" alt="Job seeker swiping a matching company" /></td>
     <td><img src="frontend/src/assets/screenshots/match_screen_2.jpeg" alt="Company swiping a matching candidate" /></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><sub>Swipe screen with match score and reasons</sub></td>
+    <td colspan="2" align="center"><sub>Swipe screen with match score, reasons, and labeled actions (also by keyboard, with undo)</sub></td>
   </tr>
   <tr>
-    <td><img src="frontend/src/assets/screenshots/match_screen_3.jpeg" alt="Match notification after mutual interest" /></td>
+    <td><img src="frontend/src/assets/screenshots/match_screen_3.jpeg" alt="Match confirmation after mutual interest" /></td>
     <td><img src="frontend/src/assets/screenshots/match_screen_4.jpeg" alt="Match list with unlocked contact" /></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><sub>Mutual interest creates a match: notification and match list with unlocked contact (company view)</sub></td>
+    <td colspan="2" align="center"><sub>Mutual interest creates a match: confirmation in place of the card, then the match list with unlocked contact (company view)</sub></td>
   </tr>
 </table>
 
@@ -202,7 +202,7 @@ The user interface uses a consistent color palette. The following colors corresp
 
 | Preview | CSS Variable | Color Code | Usage |
 |:---:|---|:---:|---|
-| 🔵 | `--color-accent` | `#4274D9` | Primary accent for buttons, links, and active states |
+| 🔵 | `--color-accent` | `#3168D6` | Primary accent for buttons, links, and active states |
 | 🟦 | `--color-accent-hover` | `#293681` | Hover state of primary buttons |
 | ⬜ | `--color-accent-bg` | `#EAF0FC` | Hover and selected states |
 | 🩵 | `--color-highlight` | `#95CCDD` | Background for tags and badges |
@@ -220,10 +220,19 @@ The user interface uses a consistent color palette. The following colors corresp
 | 🟩 | `--color-success-bg` | `#E2F4EB` | Background for success messages |
 | 🔴 | `--color-danger` | `#D93838` | Error and warning states |
 | 🟥 | `--color-danger-bg` | `#FCE8E8` | Background for error and warning messages |
+| 🔴 | `--color-danger-text` | `#A82525` | Error text on light and error backgrounds |
 
-The core colors of the design are dark blue (`#293681`), blue (`#4274D9`), light ice blue (`#95CCDD`), and a very light blue-green tone (`#D0E7E6`). Success and error colors are used separately for status states.
+The core colors of the design are dark blue (`#293681`), blue (`#3168D6`), light ice blue (`#95CCDD`), and a very light blue-green tone (`#D0E7E6`). Success and error colors are used separately for status states.
 
 Interactive states such as hover effects and selected items use dedicated variants (e.g. `--color-accent-hover`, `--color-accent-bg`) derived from this base palette instead of introducing unrelated colors.
+
+### Accessibility
+
+* Text and button colors meet WCAG AA contrast (white on `--color-accent`: 5.1:1, `--color-danger-text` on `--color-danger-bg`: 6:1)
+* Every interactive element shows a visible keyboard focus ring (`--focus-ring`)
+* The swipe screen can be used with the keyboard (← pass, → show interest), and the last rating can be undone
+* Icons are decorative (`aria-hidden`); actions always carry a text label
+* Animations respect `prefers-reduced-motion`
 
 ## Project Structure
 

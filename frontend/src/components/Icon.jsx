@@ -9,6 +9,7 @@ export default function Icon({ name, size = 20, color, style }) {
   return (
     <span
       className="material-symbols-outlined"
+      aria-hidden="true"
       style={{ ...baseStyle, fontSize: `${size}px`, color, ...style }}
     >
       {name}

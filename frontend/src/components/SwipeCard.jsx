@@ -78,11 +78,12 @@ const styles = {
 }
 
 const SwipeCard = forwardRef(function SwipeCard(
-  { card, isJob },
+  { card, isJob, swiped = false },
   ref,
 ) {
   return (
-    <div style={styles.tinderWrapper}>
+    // Weggewischte Karten bleiben für „Rückgängig“ gemountet, dürfen aber keine Klicks abfangen
+    <div style={{ ...styles.tinderWrapper, pointerEvents: swiped ? 'none' : undefined }} aria-hidden={swiped || undefined}>
       <TinderCard
         ref={ref}
         onSwipe={(dir) => {

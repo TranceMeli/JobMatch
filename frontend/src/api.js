@@ -54,7 +54,9 @@ async function request(path, options = {}, allowRetry = true) {
       message = data.title
     }
 
-    throw new Error(message)
+    const error = new Error(message)
+    error.status = err.response?.status ?? null // null = Server nicht erreichbar
+    throw error
   }
 }
 
@@ -144,6 +146,13 @@ export function setInterest(targetUserId, jobType, positive) {
     method: 'POST',
     data: { targetUserId, jobType, positive },
   })
+}
+
+export function undoInterest(targetUserId, jobType) {
+  return request(
+    `/api/matching/interest?targetUserId=${encodeURIComponent(targetUserId)}&jobType=${encodeURIComponent(jobType)}`,
+    { method: 'DELETE' },
+  )
 }
 
 export function getMatches() {
