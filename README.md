@@ -25,7 +25,7 @@ The left column shows the job seeker's view, the right column the company's view
     <td><img src="frontend/src/assets/screenshots/questions_screen_company.jpeg" alt="Company questionnaire answers" /></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><sub>Answer overview: answers that drive the match score first, personal questions collapsed</sub></td>
+    <td colspan="2" align="center"><sub>Answer overview: 37 questions grouped into categories, with filters and collapsible sections</sub></td>
   </tr>
   <tr>
     <td><img src="frontend/src/assets/screenshots/match_screen_1.jpeg" alt="Job seeker swiping a matching company" /></td>
@@ -341,7 +341,8 @@ dotnet add package Swashbuckle.AspNetCore
 ```bash
 cd frontend
 npm install
-npm install react-tinder-card @react-spring/web material-symbols --legacy-peer-deps
+npm install react-tinder-card @react-spring/web --legacy-peer-deps
+npm install -D material-symbols --legacy-peer-deps
 ```
 
 `react-tinder-card` handles the swipe gesture and requires `@react-spring/web` for the animation.
@@ -350,13 +351,17 @@ The `--legacy-peer-deps` flag is required because the declared peer dependency o
 
 ## Icons
 
-Material Symbols are self-hosted via the `material-symbols` npm package and imported in `main.jsx`:
+Material Symbols are self-hosted as a small subset that contains only the icons JobMatch uses (about 5 KB instead of 4 MB). The font lives in `frontend/src/assets/fonts/material-symbols-subset.woff2` and is included via `@font-face` in `global.css`. It is served by the app itself instead of Google Fonts, so no visitor IP addresses are sent to a third party (GDPR).
 
-```js
-import 'material-symbols/outlined.css'
+After adding a new icon (`<Icon name="..." />`), regenerate the subset:
+
+```bash
+cd frontend
+pip install fonttools brotli
+npm run icons
 ```
 
-The font is served by the app itself instead of Google Fonts, so no visitor IP addresses are sent to a third party (GDPR).
+The script `scripts/subset-icons.py` finds the icon names used in `src/`, resolves them via the font's ligature table (including aliases such as `location_on`), and writes the subset with the axes fixed to the values used in the app. The full source font comes from the `material-symbols` dev dependency.
 
 ## Configuration
 

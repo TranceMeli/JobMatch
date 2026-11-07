@@ -160,11 +160,31 @@ input, textarea, select {
   }
 }
 
+/* Icons: selbst gehostetes Subset der Material Symbols (nur genutzte Icons, ca. 5 KB).
+   Neu erzeugen nach neuen Icons: python scripts/subset-icons.py */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/material-symbols-subset.woff2') format('woff2');
+}
+
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
   line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
   vertical-align: middle;
   user-select: none;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga';
 }
 
 .save-error {
