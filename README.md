@@ -338,15 +338,22 @@ Add the following to `index.html`:
 
 ## Configuration
 
-ASP.NET Core User Secrets can be used for the JWT key:
+### JWT Key (required)
+
+The JWT signing key is not stored in the repository. The backend refuses to start without a key of at least 32 bytes.
+
+For local development, store it with ASP.NET Core User Secrets (the project is already initialized):
 
 ```bash
 cd backend
-dotnet user-secrets init
-dotnet user-secrets set "Jwt:Key" "<a long random value>"
+dotnet user-secrets set "JwtSettings:Key" "<a long random value>"
 ```
 
-The JWT key should not be stored directly in the repository.
+In other environments, provide it via the environment variable `JwtSettings__Key`.
+
+### Allowed Frontend Origins
+
+CORS only allows the origins listed under `Frontend:Urls` in `appsettings.json` (default: `http://localhost:5173`). If the frontend runs on a different port, add it there or set an environment variable. `Frontend__Urls__1=http://localhost:5180` allows port 5180 in addition to the default; `Frontend__Urls__0` would replace the default.
 
 ## Running the Application
 
@@ -359,7 +366,7 @@ dotnet run
 
 The Swagger user interface is available at `/swagger` once the API is running.
 
-On the first start, two accounts with pre-filled example profiles are created:
+When running in the `Development` environment (the default for `dotnet run`), two demo accounts with pre-filled example profiles are created. They are not created in other environments:
 
 * **Company account:** `admin@jobmatch.com` / `Admin123!`
 * **Job seeker account:** `user@jobmatch.com` / `User123!`

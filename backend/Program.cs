@@ -13,9 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()
-    ?? throw new InvalidOperationException("Der 'Jwt'-Abschnitt fehlt in appsettings.json / appsettings.Development.json.");
+    ?? throw new InvalidOperationException("Der 'JwtSettings'-Abschnitt fehlt in appsettings.json.");
 
-var frontendUrl = builder.Configuration["Frontend:Url"] ?? "http://localhost:5173";
+// Der Schlüssel gehört nicht ins Repository: lokal über User Secrets, sonst über die Umgebungsvariable JwtSettings__Key.
+if (Encoding.UTF8.GetByteCount(jwtSettings.Key) < 32)
+    throw new InvalidOperationException(
+        "JwtSettings:Key fehlt oder ist kürzer als 32 Byte. Lokal setzen mit: " +
+        "dotnet user-secrets set \"JwtSettings:Key\" \"<langer zufälliger Wert>\"");
+
+var frontendUrls = builder.Configuration.GetSection("Frontend:Urls").Get<string[]>() is { Length: > 0 } urls
+    ? urls
+    : [builder.Configuration["Frontend:Url"] ?? "http://localhost:5173"];
 
 builder.Services.AddControllers();
 
@@ -37,7 +45,7 @@ builder.Services.AddSingleton<MatchingService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-        policy.WithOrigins(frontendUrl)
+        policy.WithOrigins(frontendUrls)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials());
@@ -83,7 +91,9 @@ using (var scope = app.Services.CreateScope())
 
     await db.Database.MigrateAsync();
 
-    await DbSeeder.SeedAsync(app.Services);
+    // Demo-Konten mit bekannten Passwörtern nur lokal anlegen
+    if (app.Environment.IsDevelopment())
+        await DbSeeder.SeedAsync(app.Services);
 }
 
 if (app.Environment.IsDevelopment())

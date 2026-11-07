@@ -132,8 +132,8 @@ dist/
 .DS_Store
 Thumbs.db
 
-# ASP.NET Configuration mit Secrets
-**/appsettings.json
+# Lokale ASP.NET-Konfiguration (appsettings.json selbst enthält keine Secrets;
+# der JWT-Schlüssel kommt aus User Secrets bzw. JwtSettings__Key)
 **/appsettings.*.json
 
 # Environment Variables
