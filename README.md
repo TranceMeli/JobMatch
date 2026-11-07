@@ -103,19 +103,21 @@ JobMatch does not rely exclusively on traditional profile data for matching.
 
 Job seekers and companies complete their own questionnaire for the selected job category. This makes it possible to compare not only technical skills, but also expectations regarding collaboration.
 
-For the **Junior Developer** category, the following areas are taken into account, among others:
+For the **Junior Developer** category, each side answers 37 questions in seven categories. Every question has a counterpart on the other side, so the answers can be compared directly:
 
-* Technologies and technical interests
-* Development areas
-* Work model
-* Teamwork
-* Personal responsibility and autonomy
-* Onboarding and mentoring
-* Code reviews
-* Working style
-* Training and development opportunities
-* Offered projects and tasks
-* Expectations towards job seekers and employers
+| Category | Examples (job seeker ↔ company) |
+|---|---|
+| Technik | Technologies, development areas, tools (Git, Docker, …), working methods (Scrum, Code Reviews, …), code quality, features vs. maintenance, AI tools |
+| Zusammenarbeit | Working style, responsibility, team languages, feedback frequency, pair programming, sync vs. async communication, meetings, team size |
+| Lernen und Entwicklung | Onboarding, buddy, learning style vs. knowledge sharing, training budget, career direction |
+| Rahmenbedingungen | Work model, office days, weekly hours, start date, overtime, required German level |
+| Werte | Priorities vs. offers, flat hierarchies, industry, social impact |
+| Bewerbungsprozess | Preferred interview formats, time until an offer |
+| Persönlich | Free-text answers about motivation, problem solving, expectations, recent projects, and culture |
+
+Questions marked as required must be answered; all others are optional. The questionnaire is filled in step by step per category, and the answer overview groups the answers the same way, with filters for each category and for open questions.
+
+Questions about age, family, origin, religion, health, or disability are deliberately not asked (special categories under Art. 9 GDPR; discriminatory under the German AGG).
 
 The answers are compared and converted into a match score.
 
@@ -127,8 +129,10 @@ In addition, reasons for the match are displayed so that the result remains unde
 
 | Part | Weight | Method |
 |---|---:|---|
-| Choice questions (technologies, work model, onboarding, …) | 85 % | Set overlap, exact matches, and closeness on 1–5 scales |
+| Choice questions (32 weighted criteria) | 85 % | Set overlap, coverage, exact matches, ordinal closeness, and "at least / at most" comparisons (e.g. office days, German level) |
 | Personal free-text questions | 15 % | Shared topics, compared with the Dice coefficient |
+
+Criteria that at least one side left unanswered are skipped, and the remaining weights are redistributed, so optional questions never lower a score just because they are empty. The weights are defined in `backend/Services/MatchingService.cs`.
 
 For the free-text answers, `TextThemes` (in `backend/Services`) looks for topics such as feedback, mentoring, initiative, or error culture using a fixed list of keywords and word stems. If both sides share at least two topics, they are shown as a reason, for example: "Ihr legt beide Wert auf Weiterentwicklung, Mentoring und eigenständiges Problemlösen".
 

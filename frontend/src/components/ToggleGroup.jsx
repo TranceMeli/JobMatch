@@ -39,6 +39,7 @@ export default function ToggleGroup({ options, value, onChange, multiple = false
         <button
           key={opt}
           type="button"
+          aria-pressed={isActive(opt)}
           style={{ ...styles.chip, ...(isActive(opt) ? styles.chipActive : {}) }}
           onClick={() => toggle(opt)}
         >

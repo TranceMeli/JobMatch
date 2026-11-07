@@ -5,7 +5,10 @@ public record QuestionnaireQuestionDto(
     string Text,
     string Type,
     IReadOnlyList<string> Options,
-    bool Required);
+    bool Required,
+    string Category,
+    string? ScaleMin,
+    string? ScaleMax);
 
 public record QuestionnaireResponseSummaryDto(
     string JobType,

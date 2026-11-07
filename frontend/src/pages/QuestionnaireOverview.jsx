@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   getMyQuestionnaires,
   getQuestionnaire,
   getQuestionnaireAnswers,
 } from '../api'
 import Icon from '../components/Icon'
+
+const PERSONAL = 'Persönlich'
 
 const styles = {
   screen: {
@@ -20,7 +22,6 @@ const styles = {
     border: '1px solid var(--color-border)',
     borderRadius: 'var(--radius-card)',
     padding: '28px',
-    boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   },
   titleRow: {
     display: 'flex',
@@ -35,24 +36,45 @@ const styles = {
     fontWeight: '600',
     color: 'var(--color-text-primary)',
   },
+  subtitle: {
+    fontSize: 'var(--text-base)',
+    color: 'var(--color-text-secondary)',
+    lineHeight: '1.6',
+    marginBottom: '6px',
+  },
+  weighting: {
+    fontSize: 'var(--text-sm)',
+    color: 'var(--color-text-muted)',
+    lineHeight: '1.5',
+    marginBottom: '16px',
+  },
+  filters: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '6px',
+    marginBottom: '16px',
+    listStyle: 'none',
+  },
+  pill: {
+    minHeight: '34px',
+    padding: '0 12px',
+    borderRadius: '17px',
+    border: '1px solid var(--color-border-strong)',
+    background: 'var(--color-surface)',
+    color: 'var(--color-text-secondary)',
+    fontSize: 'var(--text-sm)',
+  },
+  pillActive: {
+    background: 'var(--color-nav-bg)',
+    borderColor: 'var(--color-nav-bg)',
+    color: '#fff',
+    fontWeight: '600',
+  },
   section: {
     border: '1px solid var(--color-border)',
     borderRadius: 'var(--radius)',
     overflow: 'hidden',
-    marginBottom: '14px',
-  },
-  sectionBody: { padding: '14px 18px 0' },
-  info: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'flex-start',
-    padding: '10px 12px',
-    marginBottom: '16px',
-    borderRadius: 'var(--radius)',
-    background: 'var(--color-bg)',
-    color: 'var(--color-text-secondary)',
-    fontSize: 'var(--text-sm)',
-    lineHeight: '1.55',
+    marginBottom: '12px',
   },
   sectionHead: {
     width: '100%',
@@ -66,36 +88,31 @@ const styles = {
     textAlign: 'left',
     color: 'var(--color-text-primary)',
   },
-  sectionTitle: { fontSize: 'var(--text-lg)', fontWeight: '600' },
-  sectionHint: { fontSize: 'var(--text-sm)', fontWeight: '400', color: 'var(--color-text-secondary)', marginTop: '2px' },
-  subtitle: {
-    fontSize: 'var(--text-base)',
-    color: 'var(--color-text-secondary)',
-    lineHeight: '1.6',
-    marginBottom: '24px',
-  },
-  meta: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '6px 10px',
-    borderRadius: '999px',
-    background: 'var(--color-accent-bg)',
-    color: 'var(--color-accent)',
+  sectionTitle: { display: 'block', fontSize: 'var(--text-lg)', fontWeight: '600' },
+  sectionHint: { display: 'block', fontSize: 'var(--text-sm)', fontWeight: '400', color: 'var(--color-text-secondary)', marginTop: '2px' },
+  sectionMeta: { display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontWeight: '400' },
+  openBadge: {
+    padding: '1px 8px',
+    borderRadius: '10px',
+    background: 'var(--color-danger-bg)',
+    color: 'var(--color-danger-text)',
     fontSize: 'var(--text-xs)',
     fontWeight: '600',
-    marginBottom: '22px',
   },
-  group: {
-    padding: '0 0 18px',
-    marginBottom: '18px',
+  sectionBody: { padding: '4px 18px' },
+  row: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: '4px 16px',
+    padding: '12px 0',
     borderBottom: '1px solid var(--color-border)',
   },
+  rowFull: { gridTemplateColumns: '1fr' },
   question: {
     fontSize: 'var(--text-sm)',
     fontWeight: '600',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.5',
-    marginBottom: '7px',
   },
   answer: {
     fontSize: 'var(--text-base)',
@@ -103,18 +120,43 @@ const styles = {
     lineHeight: '1.6',
     whiteSpace: 'pre-wrap',
   },
+  chip: {
+    display: 'inline-block',
+    padding: '1px 9px',
+    margin: '0 4px 4px 0',
+    borderRadius: '12px',
+    background: 'var(--color-bg)',
+    border: '1px solid var(--color-border)',
+    color: 'var(--color-text-secondary)',
+    fontSize: 'var(--text-sm)',
+  },
+  dots: { letterSpacing: '3px', color: 'var(--color-accent)' },
+  scaleText: { fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginLeft: '8px' },
   empty: {
     color: 'var(--color-text-muted)',
     fontStyle: 'italic',
   },
+  info: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'flex-start',
+    padding: '10px 12px',
+    margin: '12px 0 4px',
+    borderRadius: 'var(--radius)',
+    background: 'var(--color-bg)',
+    color: 'var(--color-text-secondary)',
+    fontSize: 'var(--text-sm)',
+    lineHeight: '1.55',
+  },
   actions: {
     display: 'flex',
     gap: '10px',
-    marginTop: '24px',
+    marginTop: '20px',
     flexWrap: 'wrap',
   },
   editBtn: {
-    padding: '9px 16px',
+    minHeight: '42px',
+    padding: '0 18px',
     borderRadius: 'var(--radius)',
     border: 'none',
     background: 'var(--color-accent)',
@@ -124,14 +166,13 @@ const styles = {
   },
   secondary: {
     flex: '1 1 160px',
-    padding: '12px 14px',
+    minHeight: '46px',
     borderRadius: 'var(--radius)',
     border: '1px solid var(--color-border-strong)',
     background: 'var(--color-surface)',
     color: 'var(--color-text-primary)',
     fontSize: 'var(--text-base)',
     fontWeight: '600',
-    cursor: 'pointer',
   },
   error: {
     padding: '10px 12px',
@@ -157,20 +198,31 @@ function isAnswered(value) {
   )
 }
 
-function formatAnswer(question, value) {
+function Answer({ question, value }) {
   if (!isAnswered(value)) {
-    return 'Keine Antwort hinterlegt.'
+    return <span style={styles.empty}>Noch offen</span>
   }
 
   if (question.type === 'scale') {
-    return `${value} von 5`
+    const n = Number(value)
+    const label = n === 1 ? question.scaleMin : n === 5 ? question.scaleMax : null
+    return (
+      <span>
+        <span style={styles.dots} aria-hidden="true">{'●'.repeat(n)}{'○'.repeat(5 - n)}</span>
+        <span style={styles.scaleText}>{n} von 5{label ? ` · ${label}` : ''}</span>
+      </span>
+    )
   }
 
   if (Array.isArray(value)) {
-    return value.join(', ')
+    return (
+      <span>
+        {value.map((item) => <span key={item} style={styles.chip}>{item}</span>)}
+      </span>
+    )
   }
 
-  return String(value)
+  return <span>{String(value)}</span>
 }
 
 export default function QuestionnaireOverview({
@@ -184,7 +236,8 @@ export default function QuestionnaireOverview({
   const [updatedAt, setUpdatedAt] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [personalOpen, setPersonalOpen] = useState(false)
+  const [filter, setFilter] = useState('all') // 'all' | 'open' | Kategoriename
+  const [openSections, setOpenSections] = useState(null)
 
   useEffect(() => {
     let active = true
@@ -230,36 +283,51 @@ export default function QuestionnaireOverview({
     }
   }, [jobType])
 
+  const categories = useMemo(() => {
+    const order = []
+    for (const q of questions) {
+      if (!order.includes(q.category)) order.push(q.category)
+    }
+    return order
+  }, [questions])
+
   if (loading) {
     return (
       <div style={styles.screen}>
-        <div style={styles.loading}>
-          Antworten werden geladen ...
-        </div>
+        <div style={styles.loading}>Antworten werden geladen …</div>
       </div>
     )
   }
 
   const isApplicant = role === 'User'
-
-  // Auswahlfragen zählen 85 %, Freitexte über erkannte Themen 15 % (siehe MatchingService)
-  const scoredQuestions = questions.filter((q) => q.type !== 'text')
-  const personalQuestions = questions.filter((q) => q.type === 'text')
   const answeredCount = questions.filter((q) => isAnswered(answers[q.key])).length
+  const openCount = questions.length - answeredCount
 
-  function renderQuestion(question) {
-    return (
-      <div key={question.key} style={styles.group}>
-        <div style={styles.question}>{question.text}</div>
-        <div style={styles.answer}>
-          {formatAnswer(question, answers[question.key])}
-        </div>
-      </div>
-    )
+  // Standard: die ersten beiden Kategorien aufgeklappt
+  const expanded = openSections ?? new Set(categories.slice(0, 2))
+
+  function toggleSection(category) {
+    const next = new Set(expanded)
+    if (next.has(category)) next.delete(category)
+    else next.add(category)
+    setOpenSections(next)
   }
 
+  const visibleCategories = filter === 'all' || filter === 'open' ? categories : [filter]
+
+  function questionsFor(category) {
+    const list = questions.filter((q) => q.category === category)
+    return filter === 'open' ? list.filter((q) => !isAnswered(answers[q.key])) : list
+  }
+
+  const filterOptions = [
+    { key: 'all', label: 'Alle' },
+    ...categories.map((c) => ({ key: c, label: c })),
+    ...(openCount > 0 ? [{ key: 'open', label: `Offen (${openCount})` }] : []),
+  ]
+
   return (
-    <div style={styles.screen}>
+    <main style={styles.screen}>
       <div style={styles.card}>
         <div style={styles.titleRow}>
           <h1 style={styles.title}>{isApplicant ? 'Deine Antworten' : 'Eure Antworten'}</h1>
@@ -269,65 +337,103 @@ export default function QuestionnaireOverview({
         </div>
 
         <div style={styles.subtitle}>
-          {answeredCount} von {questions.length} Fragen beantwortet
+          {jobType} · {answeredCount} von {questions.length} Fragen beantwortet
           {updatedAt && ` · zuletzt geändert am ${new Date(updatedAt).toLocaleDateString('de-DE')}`}
         </div>
-
-        <div style={styles.meta}>{jobType}</div>
+        <div style={styles.weighting}>
+          Auswahlfragen bestimmen 85 % des Match-Scores, persönliche Fragen 15 %. Offene Fragen werden beim Matching übersprungen.
+        </div>
 
         {error && <div style={styles.error} role="alert">{error}</div>}
 
         {!error && (
           <>
-            <section style={styles.section} aria-labelledby="scored-title">
-              <div style={{ ...styles.sectionHead, cursor: 'default' }}>
-                <div>
-                  <h2 id="scored-title" style={styles.sectionTitle}>Auswahlfragen</h2>
-                  <div style={styles.sectionHint}>Bestimmen 85 % des Match-Scores.</div>
-                </div>
-              </div>
-              <div style={styles.sectionBody}>{scoredQuestions.map(renderQuestion)}</div>
-            </section>
-
-            {personalQuestions.length > 0 && (
-              <section style={styles.section} aria-labelledby="personal-title">
-                <h2 style={{ margin: 0 }}>
+            <ul style={styles.filters} aria-label="Antworten filtern">
+              {filterOptions.map((option) => (
+                <li key={option.key}>
                   <button
                     type="button"
-                    style={styles.sectionHead}
-                    aria-expanded={personalOpen}
-                    aria-controls="personal-answers"
-                    onClick={() => setPersonalOpen((open) => !open)}
+                    style={{ ...styles.pill, ...(filter === option.key ? styles.pillActive : {}) }}
+                    aria-pressed={filter === option.key}
+                    onClick={() => setFilter(option.key)}
                   >
-                    <span>
-                      <span id="personal-title" style={{ ...styles.sectionTitle, display: 'block' }}>
-                        Persönliche Fragen ({personalQuestions.length})
-                      </span>
-                      <span style={{ ...styles.sectionHint, display: 'block' }}>
-                        Bestimmen 15 % des Match-Scores über gemeinsame Themen.
-                      </span>
-                    </span>
-                    <Icon name={personalOpen ? 'expand_less' : 'expand_more'} size={24} />
+                    {option.label}
                   </button>
-                </h2>
-                <div id="personal-answers" hidden={!personalOpen} style={styles.sectionBody}>
-                  <div style={styles.info}>
-                    <Icon name="info" size={18} />
-                    <div>
-                      <b>So werden die Freitexte ausgewertet:</b> JobMatch sucht in den Antworten beider Seiten nach
-                      gemeinsamen Themen wie Feedback, Mentoring oder Eigeninitiative. Das passiert lokal auf dem
-                      JobMatch-Server, ohne externe Dienste. Erkannt werden nur Stichwörter, keine Bedeutung.
-                      <br />
-                      <b>Hinweis:</b> Eine Auswertung, die Texte wirklich versteht, z. B. mit einem KI-Sprachmodell,
-                      bräuchte eine externe API. Dann würden die Freitexte an diesen Anbieter übermittelt, und dafür
-                      wären ein Auftragsverarbeitungsvertrag und ein Hinweis in der Datenschutzerklärung nötig.
-                      Bitte keine Angaben zu Gesundheit, Herkunft, Religion oder ähnlich sensiblen Themen.
-                    </div>
+                </li>
+              ))}
+            </ul>
+
+            {visibleCategories.map((category) => {
+              const all = questions.filter((q) => q.category === category)
+              const list = questionsFor(category)
+              if (list.length === 0) return null
+
+              const done = all.filter((q) => isAnswered(answers[q.key])).length
+              const isOpen = filter !== 'all' || expanded.has(category)
+              const bodyId = `section-${category.replace(/\W+/g, '-')}`
+              const isPersonal = category === PERSONAL
+
+              return (
+                <section key={category} style={styles.section} aria-labelledby={`${bodyId}-title`}>
+                  <h2 style={{ margin: 0 }}>
+                    <button
+                      type="button"
+                      style={styles.sectionHead}
+                      aria-expanded={isOpen}
+                      aria-controls={bodyId}
+                      onClick={() => (filter === 'all' ? toggleSection(category) : setFilter('all'))}
+                    >
+                      <span>
+                        <span id={`${bodyId}-title`} style={styles.sectionTitle}>{category}</span>
+                        {isPersonal && (
+                          <span style={styles.sectionHint}>Fließt über gemeinsame Themen mit 15 % ein.</span>
+                        )}
+                      </span>
+                      <span style={styles.sectionMeta}>
+                        {done < all.length
+                          ? <span style={styles.openBadge}>{all.length - done} offen</span>
+                          : <span>{done}/{all.length}</span>}
+                        <Icon name={isOpen ? 'expand_less' : 'expand_more'} size={24} />
+                      </span>
+                    </button>
+                  </h2>
+
+                  <div id={bodyId} hidden={!isOpen} style={styles.sectionBody}>
+                    {isPersonal && (
+                      <div style={styles.info}>
+                        <Icon name="info" size={18} />
+                        <div>
+                          <b>So werden die Freitexte ausgewertet:</b> JobMatch sucht in den Antworten beider Seiten nach
+                          gemeinsamen Themen wie Feedback, Mentoring oder Eigeninitiative. Das passiert lokal auf dem
+                          JobMatch-Server, ohne externe Dienste. Erkannt werden nur Stichwörter, keine Bedeutung.
+                          <br />
+                          <b>Hinweis:</b> Eine Auswertung, die Texte wirklich versteht, z. B. mit einem KI-Sprachmodell,
+                          bräuchte eine externe API. Dann würden die Freitexte an diesen Anbieter übermittelt, und dafür
+                          wären ein Auftragsverarbeitungsvertrag und ein Hinweis in der Datenschutzerklärung nötig.
+                          Bitte keine Angaben zu Gesundheit, Herkunft, Religion oder ähnlich sensiblen Themen.
+                        </div>
+                      </div>
+                    )}
+
+                    {list.map((question, index) => (
+                      <div
+                        key={question.key}
+                        style={{
+                          ...styles.row,
+                          ...(question.type === 'text' ? styles.rowFull : {}),
+                          ...(index === list.length - 1 ? { borderBottom: 'none' } : {}),
+                        }}
+                      >
+                        <div style={styles.question}>{question.text}</div>
+                        <div style={styles.answer}>
+                          <Answer question={question} value={answers[question.key]} />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  {personalQuestions.map(renderQuestion)}
-                </div>
-              </section>
-            )}
+                </section>
+              )
+            })}
           </>
         )}
 
@@ -341,6 +447,6 @@ export default function QuestionnaireOverview({
           </button>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

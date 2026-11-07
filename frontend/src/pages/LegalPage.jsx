@@ -65,7 +65,7 @@ function Privacy() {
       <ul style={styles.ul}>
         <li><b>Konto:</b> Vor- und Nachname, E-Mail-Adresse und dein Passwort, das nur als sicherer Hash gespeichert wird.</li>
         <li><b>Profil:</b> die Angaben, die du selbst einträgst, z. B. Position, Erfahrung, Ausbildung, Skills, Sprachen, Standort, Gehaltsvorstellung, Verfügbarkeit und Links (GitHub, LinkedIn, Portfolio). Bei Unternehmen: Branche, Größe, Standorte, Gehaltsspanne, Remote-Optionen und Benefits.</li>
-        <li><b>Fragebogen:</b> deine Antworten für die gewählte Jobkategorie, auch Freitexte.</li>
+        <li><b>Fragebogen:</b> deine Antworten für die gewählte Jobkategorie, z. B. zu Technik, Zusammenarbeit, Rahmenbedingungen (Arbeitszeit, Bürotage, Startzeitpunkt, Deutschniveau), Werten und Bewerbungsprozess, dazu Freitexte. Nur die markierten Pflichtfragen musst du beantworten, leere freiwillige Fragen werden beim Matching übersprungen.</li>
         <li><b>Bewertungen und Matches:</b> bei wem du Interesse gezeigt oder gepasst hast, und daraus entstandene Matches.</li>
         <li><b>Sitzung:</b> ein Anmelde-Token mit Erstell- und Ablaufdatum.</li>
       </ul>

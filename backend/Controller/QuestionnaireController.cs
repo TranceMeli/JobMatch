@@ -108,14 +108,19 @@ public class QuestionnaireController : ControllerBase
         }
 
         var definitions = QuestionnaireCatalog.GetDefinitions(jobType, IsApplicant);
-        foreach (var question in definitions.Where(q => q.Required))
+        // Pflichtfragen müssen beantwortet sein; jede vorhandene Antwort wird geprüft, auch bei optionalen Fragen
+        foreach (var question in definitions)
         {
-            if (!answers.TryGetProperty(question.Key, out var answer) ||
+            var missing = !answers.TryGetProperty(question.Key, out var answer) ||
                 answer.ValueKind == JsonValueKind.Null ||
                 (answer.ValueKind == JsonValueKind.String && string.IsNullOrWhiteSpace(answer.GetString())) ||
-                (answer.ValueKind == JsonValueKind.Array && answer.GetArrayLength() == 0))
+                (answer.ValueKind == JsonValueKind.Array && answer.GetArrayLength() == 0);
+
+            if (missing)
             {
-                return BadRequest(new { error = $"Bitte beantworte die Frage '{question.Text}'." });
+                if (question.Required)
+                    return BadRequest(new { error = $"Bitte beantworte die Frage '{question.Text}'." });
+                continue;
             }
 
             if (question.Type == "scale")
