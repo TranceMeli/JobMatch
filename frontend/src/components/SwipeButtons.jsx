@@ -14,7 +14,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: '8px',
-    fontSize: '15px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
     transition: 'background-color var(--duration-fast), border-color var(--duration-fast)',
   },

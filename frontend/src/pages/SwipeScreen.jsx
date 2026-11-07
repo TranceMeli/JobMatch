@@ -21,36 +21,37 @@ const styles = {
     alignItems: 'baseline',
   },
   headerTitle: {
-    fontSize: '18px',
+    fontSize: 'var(--text-lg)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
   },
   count: {
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     color: 'var(--color-text-secondary)',
   },
   stack: {
-    position: 'relative',
+    display: 'grid',
     width: '100%',
-    height: '470px',
+    minHeight: 'var(--stack-height)',
   },
   empty: {
+    gridArea: '1 / 1',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '470px',
+    minHeight: 'var(--stack-height)',
     gap: '12px',
     textAlign: 'center',
   },
   emptyIcon: { color: 'var(--color-highlight-text)' },
   emptyTitle: {
-    fontSize: '18px',
+    fontSize: 'var(--text-lg)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
   },
   emptySub: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-secondary)',
     maxWidth: '340px',
     lineHeight: '1.6',
@@ -62,7 +63,7 @@ const styles = {
     background: 'var(--color-bg)',
   },
   matchPanel: {
-    height: '470px',
+    height: 'var(--stack-height)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -75,12 +76,12 @@ const styles = {
     background: 'var(--color-surface)',
   },
   matchTitle: {
-    fontSize: '20px',
+    fontSize: 'var(--text-xl)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
   },
   matchText: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     lineHeight: '1.6',
     color: 'var(--color-text-secondary)',
     maxWidth: '320px',
@@ -98,7 +99,7 @@ const styles = {
     border: 'none',
     background: 'var(--color-accent)',
     color: '#fff',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
   },
   secondary: {
@@ -108,7 +109,7 @@ const styles = {
     border: '1px solid var(--color-border-strong)',
     background: 'var(--color-surface)',
     color: 'var(--color-text-primary)',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
   },
   footer: {
@@ -117,7 +118,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: '12px',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     color: 'var(--color-text-secondary)',
   },
   undo: {
@@ -128,7 +129,7 @@ const styles = {
     background: 'transparent',
     padding: '6px 2px',
     color: 'var(--color-accent-hover)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     fontWeight: '600',
     textDecoration: 'underline',
   },
@@ -139,7 +140,7 @@ const styles = {
     border: '1px solid var(--color-danger)',
     background: 'var(--color-danger-bg)',
     color: 'var(--color-danger-text)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
   },
 }
 
@@ -257,7 +258,7 @@ export default function SwipeScreen({ role, jobType, onInterest, onShowMatches }
   const contentWidth = widthFor(useBreakpoint(), {
     mobile: 360,
     tablet: 420,
-    desktop: 460,
+    desktop: 540,
   })
 
   const contentStyle = {
@@ -304,7 +305,7 @@ export default function SwipeScreen({ role, jobType, onInterest, onShowMatches }
               Match mit {match.name}
             </h2>
             {match.score != null && (
-              <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--color-highlight-text)' }}>
+              <div style={{ fontSize: 'var(--text-sm)', fontWeight: '600', color: 'var(--color-highlight-text)' }}>
                 {match.score} % Übereinstimmung
               </div>
             )}

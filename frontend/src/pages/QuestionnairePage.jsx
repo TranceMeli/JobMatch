@@ -19,13 +19,13 @@ const styles = {
     boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   },
   title: {
-    fontSize: '22px',
+    fontSize: 'var(--text-xl)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
     marginBottom: '6px',
   },
   subtitle: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.6',
     marginBottom: '28px',
@@ -37,7 +37,7 @@ const styles = {
   },
   label: {
     display: 'block',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
     marginBottom: '10px',
@@ -70,7 +70,7 @@ const styles = {
     border: '1px solid var(--color-border-strong)',
     background: 'var(--color-surface)',
     color: 'var(--color-text-primary)',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     resize: 'vertical',
   },
   submit: {
@@ -81,7 +81,7 @@ const styles = {
     border: 'none',
     background: 'var(--color-accent)',
     color: '#fff',
-    fontSize: '15px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
   },
   error: {
@@ -91,11 +91,11 @@ const styles = {
     border: '1px solid var(--color-danger)',
     background: 'var(--color-danger-bg)',
     color: 'var(--color-danger)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
   },
   loading: {
     color: 'var(--color-text-secondary)',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
   },
 }
 
@@ -187,12 +187,18 @@ export default function QuestionnairePage({ role, jobType, onSaved }) {
     }
 
     return (
-      <textarea
-        style={styles.textarea}
-        value={value || ''}
-        onChange={(event) => updateAnswer(setAnswers, question.key, event.target.value)}
-        placeholder="Deine Antwort ..."
-      />
+      <>
+        <textarea
+          style={styles.textarea}
+          value={value || ''}
+          aria-describedby={`${question.key}-hint`}
+          onChange={(event) => updateAnswer(setAnswers, question.key, event.target.value)}
+          placeholder="Deine Antwort ..."
+        />
+        <div id={`${question.key}-hint`} style={{ marginTop: '6px', fontSize: 'var(--text-xs)', lineHeight: '1.5', color: 'var(--color-text-muted)' }}>
+          Gemeinsame Themen fließen in den Match-Score ein. Bitte keine Angaben zu Gesundheit, Herkunft, Religion oder ähnlich sensiblen Themen.
+        </div>
+      </>
     )
   }
 

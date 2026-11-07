@@ -2,8 +2,8 @@ import { useBreakpoint, widthFor } from '../hooks/useBreakpoint'
 
 const styles = {
   screen: { flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px 16px', gap: '18px' },
-  heading: { fontSize: '18px', fontWeight: '600', color: 'var(--color-text-primary)', textAlign: 'center' },
-  subheading: { fontSize: '14px', color: 'var(--color-text-secondary)', textAlign: 'center', marginTop: '-10px' },
+  heading: { fontSize: 'var(--text-lg)', fontWeight: '600', color: 'var(--color-text-primary)', textAlign: 'center' },
+  subheading: { fontSize: 'var(--text-base)', color: 'var(--color-text-secondary)', textAlign: 'center', marginTop: '-10px' },
   card: {
     width: '100%',
     borderRadius: 'var(--radius-card)', border: '1px solid var(--color-border)',
@@ -14,32 +14,32 @@ const styles = {
   avatar: {
     width: '48px', height: '48px', borderRadius: '50%',
     background: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: '18px', fontWeight: '600', color: '#fff',
+    fontSize: 'var(--text-lg)', fontWeight: '600', color: '#fff',
   },
-  name: { fontSize: '20px', fontWeight: '600', color: 'var(--color-text-primary)' },
-  subtitle: { fontSize: '14px', color: 'var(--color-success)', marginTop: '-6px' },
+  name: { fontSize: 'var(--text-xl)', fontWeight: '600', color: 'var(--color-text-primary)' },
+  subtitle: { fontSize: 'var(--text-base)', color: 'var(--color-success)', marginTop: '-6px' },
   chips: { display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '2px' },
   chip: {
     padding: '3px 10px', borderRadius: '20px',
-    border: '1px solid var(--color-border-strong)', fontSize: '12px', color: 'var(--color-text-secondary)',
+    border: '1px solid var(--color-border-strong)', fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)',
   },
-  bio: { fontSize: '14px', color: 'var(--color-text-secondary)', lineHeight: '1.6' },
+  bio: { fontSize: 'var(--text-base)', color: 'var(--color-text-secondary)', lineHeight: '1.6' },
   metaGrid: { display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '10px', borderTop: '1px solid var(--color-border)' },
-  metaRow: { display: 'flex', justifyContent: 'space-between', fontSize: '13px' },
+  metaRow: { display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)' },
   metaLabel: { color: 'var(--color-text-muted)' },
   metaValue: { color: 'var(--color-text-primary)', fontWeight: '500', textAlign: 'right' },
   links: { display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '2px' },
-  link: { fontSize: '13px', color: 'var(--color-accent)', textDecoration: 'none' },
+  link: { fontSize: 'var(--text-sm)', color: 'var(--color-accent)', textDecoration: 'none' },
   actions: { width: '100%', display: 'flex', gap: '10px' },
   continueBtn: {
     flex: 1, padding: '12px', borderRadius: 'var(--radius)', border: 'none',
-    background: 'var(--color-accent)', color: '#fff', fontSize: '15px', fontWeight: '600',
+    background: 'var(--color-accent)', color: '#fff', fontSize: 'var(--text-base)', fontWeight: '600',
     cursor: 'pointer', transition: 'background-color 0.15s',
   },
   editBtn: {
     flex: 1, padding: '12px', borderRadius: 'var(--radius)',
     border: '1px solid var(--color-border-strong)', background: 'var(--color-surface)',
-    color: 'var(--color-text-primary)', fontSize: '15px', fontWeight: '600',
+    color: 'var(--color-text-primary)', fontSize: 'var(--text-base)', fontWeight: '600',
     cursor: 'pointer', transition: 'background-color 0.15s',
   },
 }

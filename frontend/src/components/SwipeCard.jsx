@@ -3,13 +3,15 @@ import TinderCard from 'react-tinder-card'
 import Icon from './Icon'
 
 const styles = {
-  tinderWrapper: { position: 'absolute', width: '100%' },
+  // Alle Karten liegen in derselben Grid-Zelle; der Stapel wächst mit der höchsten Karte
+  tinderWrapper: { gridArea: '1 / 1', width: '100%' },
   card: {
     position: 'relative',
     borderRadius: 'var(--radius-card)',
     border: '1px solid var(--color-border)',
+    borderTop: '6px solid var(--color-highlight)',
     background: 'var(--color-surface)',
-    padding: '24px',
+    padding: '20px 24px 24px',
     minHeight: '400px',
     display: 'flex',
     flexDirection: 'column',
@@ -27,18 +29,18 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { fontSize: '20px', fontWeight: '600', color: 'var(--color-text-primary)' },
-  subtitle: { fontSize: '14px', color: 'var(--color-success)', marginTop: '-4px' },
+  title: { fontSize: 'var(--text-2xl)', fontWeight: '600', color: 'var(--color-text-primary)', lineHeight: '1.2' },
+  subtitle: { fontSize: 'var(--text-base)', color: 'var(--color-success)', marginTop: '-4px' },
   tags: { display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '2px' },
   tag: {
     padding: '3px 10px',
     borderRadius: '20px',
     border: '1px solid var(--color-border-strong)',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     color: 'var(--color-text-secondary)',
   },
   description: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.6',
     flex: 1,
@@ -52,11 +54,11 @@ const styles = {
     borderRadius: '20px',
     background: 'var(--color-highlight)',
     color: 'var(--color-highlight-text)',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     fontWeight: '700',
   },
   reasons: {
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     lineHeight: '1.5',
     color: 'var(--color-text-secondary)',
   },
@@ -72,7 +74,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     color: 'var(--color-text-muted)',
   },
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import LegalPage from './pages/LegalPage'
 import AuthForm from './pages/AuthForm'
 import ProfileForm from './pages/ProfileForm'
 import ProfileCard from './pages/ProfileCard'
@@ -31,6 +33,7 @@ export default function App() {
   const [matches, setMatches] = useState([])
   const [loading, setLoading] = useState(true)
   const [saveError, setSaveError] = useState(null)
+  const [returnView, setReturnView] = useState('auth')
 
   async function loadUserData() {
     const saved = await loadProfile()
@@ -140,13 +143,19 @@ export default function App() {
 
   if (loading) {
     return (
-      <div aria-busy="true" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-secondary)', fontSize: '14px' }}>
+      <div aria-busy="true" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-secondary)', fontSize: 'var(--text-base)' }}>
         JobMatch wird geladen …
       </div>
     )
   }
 
-  const showNav = view !== 'auth'
+  // Rechtsseiten sind auch ohne Login erreichbar
+  const showNav = Boolean(user) && view !== 'auth'
+
+  function showLegal(page) {
+    if (!view.startsWith('legal-')) setReturnView(view)
+    setView(`legal-${page}`)
+  }
 
   return (
     <>
@@ -154,14 +163,22 @@ export default function App() {
         <Navbar
           view={view}
           setView={setView}
-          likedCount={matches.length}
-          onReset={onLogout}
+          matchCount={matches.length}
+          userName={profile?.name || [user?.firstName, user?.lastName].filter(Boolean).join(' ')}
+          onLogout={onLogout}
           onHome={() => setView(jobType ? 'swipe' : 'questionnaire-select')}
           onQuestions={() => setView(jobType ? 'questionnaire-overview' : 'questionnaire-select')}
         />
       )}
 
       {view === 'auth' && <AuthForm onAuthenticated={onAuthenticated} />}
+
+      {view.startsWith('legal-') && (
+        <LegalPage
+          page={view.slice('legal-'.length)}
+          onBack={() => setView(user ? returnView : 'auth')}
+        />
+      )}
 
       {view === 'profile-form' && (
         <ProfileForm
@@ -229,6 +246,8 @@ export default function App() {
 
       {view === 'matches' && <Matches refreshKey={matches.length} />}
 
+      <Footer onShowLegal={showLegal} />
+
       {saveError && (
         <div
           role="alert"
@@ -244,7 +263,7 @@ export default function App() {
             color: 'var(--color-danger-text)',
             padding: '8px 8px 8px 16px',
             borderRadius: 'var(--radius)',
-            fontSize: '13px',
+            fontSize: 'var(--text-sm)',
             border: '1px solid var(--color-danger)',
             maxWidth: '90%',
             zIndex: 30,
@@ -258,7 +277,7 @@ export default function App() {
               border: 'none',
               background: 'transparent',
               color: 'inherit',
-              fontSize: '13px',
+              fontSize: 'var(--text-sm)',
               fontWeight: '600',
               padding: '6px 8px',
             }}

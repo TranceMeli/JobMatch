@@ -123,7 +123,16 @@ Different criteria can be weighted so that important aspects have a stronger inf
 
 In addition, reasons for the match are displayed so that the result remains understandable.
 
-Personal questions provide additional information about the respective side and are not directly included in the numerical match score.
+### How the score is calculated
+
+| Part | Weight | Method |
+|---|---:|---|
+| Choice questions (technologies, work model, onboarding, …) | 85 % | Set overlap, exact matches, and closeness on 1–5 scales |
+| Personal free-text questions | 15 % | Shared topics, compared with the Dice coefficient |
+
+For the free-text answers, `TextThemes` (in `backend/Services`) looks for topics such as feedback, mentoring, initiative, or error culture using a fixed list of keywords and word stems. If both sides share at least two topics, they are shown as a reason, for example: "Ihr legt beide Wert auf Weiterentwicklung, Mentoring und eigenständiges Problemlösen".
+
+> **Note on APIs:** The free-text evaluation runs entirely on the JobMatch server and needs **no external API**. Its limit: it recognizes keywords, not meaning, so synonyms outside the list are missed. Evaluating texts with real language understanding (e.g. an LLM such as Claude) would require an external API. Free-text answers would then be sent to that provider, which requires a data processing agreement (Art. 28 GDPR), an update of the privacy policy, and an API key with ongoing costs.
 
 ### Answer Overview
 
@@ -180,7 +189,7 @@ Registration / Login
 * React
 * Vite
 * react-tinder-card
-* Material Symbols (Google Fonts)
+* Material Symbols (self-hosted)
 
 ### Backend
 
@@ -215,12 +224,17 @@ The user interface uses a consistent color palette. The following colors corresp
 | 🩵 | `--color-border-strong` | `#95CCDD` | More prominent separators |
 | 🔷 | `--color-text-primary` | `#121A42` | Primary text |
 | 🟦 | `--color-text-secondary` | `#293681` | Secondary text, labels, and subheadings |
-| 🔹 | `--color-text-muted` | `#5C77A5` | Muted text and supporting information |
+| 🔹 | `--color-text-muted` | `#4F6896` | Muted text and supporting information |
 | 🟦 | `--color-success` | `#293681` | Success messages and positive status indicators |
 | 🟩 | `--color-success-bg` | `#E2F4EB` | Background for success messages |
 | 🔴 | `--color-danger` | `#D93838` | Error and warning states |
 | 🟥 | `--color-danger-bg` | `#FCE8E8` | Background for error and warning messages |
 | 🔴 | `--color-danger-text` | `#A82525` | Error text on light and error backgrounds |
+| 🟦 | `--color-nav-bg` | `#293681` | Navigation bar (text `--color-nav-text` `#D0E7E6`, active item `#95CCDD`) |
+| ⬛ | `--color-footer-bg` | `#121A42` | Footer (text `--color-footer-text` `#D0E7E6`) |
+| 🩶 | `--color-section-head` | `#D0E7E6` | Section headers inside cards |
+
+The layout uses a navy frame: navy navigation, night-blue footer, content on `--color-bg`, and white cards. On phones the main sections move to a bottom tab bar.
 
 The core colors of the design are dark blue (`#293681`), blue (`#3168D6`), light ice blue (`#95CCDD`), and a very light blue-green tone (`#D0E7E6`). Success and error colors are used separately for status states.
 
@@ -323,7 +337,7 @@ dotnet add package Swashbuckle.AspNetCore
 ```bash
 cd frontend
 npm install
-npm install react-tinder-card @react-spring/web --legacy-peer-deps
+npm install react-tinder-card @react-spring/web material-symbols --legacy-peer-deps
 ```
 
 `react-tinder-card` handles the swipe gesture and requires `@react-spring/web` for the animation.
@@ -332,18 +346,13 @@ The `--legacy-peer-deps` flag is required because the declared peer dependency o
 
 ## Icons
 
-Material Symbols are loaded through Google Fonts and are not installed as an npm package.
+Material Symbols are self-hosted via the `material-symbols` npm package and imported in `main.jsx`:
 
-Add the following to `index.html`:
-
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-  rel="stylesheet"
-/>
+```js
+import 'material-symbols/outlined.css'
 ```
+
+The font is served by the app itself instead of Google Fonts, so no visitor IP addresses are sent to a third party (GDPR).
 
 ## Configuration
 

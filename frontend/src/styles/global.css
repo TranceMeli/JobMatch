@@ -17,7 +17,7 @@
   /* Typografie */
   --color-text-primary: #121A42;       /* Sehr dunkles Marineblau für maximale Lesbarkeit */
   --color-text-secondary: #293681;     /* Marineblau für Subheadings / Labels */
-  --color-text-muted: #5C77A5;         /* Dezent abgedunkelter Farbton für Hilfstexte */
+  --color-text-muted: #4F6896;         /* Hilfstexte (4.8:1 auf --color-bg, 5.6:1 auf Weiß) */
 
   /* Primäre Interaktionen / Akzente (CTA Buttons, Aktive States) */
   --color-accent: #3168D6;             /* Königsblau für Haupt-Buttons (5.1:1 mit weißer Schrift, WCAG AA) */
@@ -41,6 +41,24 @@
   --color-danger-hover: #A82525;
   --color-danger-text: #A82525;        /* Fehlertext auf --color-danger-bg (6:1) */
 
+  /* Rahmen (Variante „Navy-Rahmen“): Navigation, Fußleiste, Abschnittsköpfe */
+  --color-nav-bg: #293681;
+  --color-nav-text: #D0E7E6;           /* 8.4:1 auf Navy */
+  --color-nav-active-bg: #95CCDD;
+  --color-nav-active-text: #121A42;
+  --color-footer-bg: #121A42;
+  --color-footer-text: #D0E7E6;        /* 13:1 auf Nachtblau */
+  --color-section-head: #D0E7E6;
+
+  /* Schriftskala – ab 1440 px Breite automatisch größer (siehe Media Query unten) */
+  --text-xs: 13px;    /* Badges, Hinweise */
+  --text-sm: 14px;    /* Labels, Begründungen, Meta */
+  --text-base: 16px;  /* Fließtext, Buttons, Navigation */
+  --text-lg: 18px;    /* Untertitel, Abschnittsköpfe */
+  --text-xl: 22px;    /* Seitentitel */
+  --text-2xl: 26px;   /* Kartentitel */
+  --stack-height: 440px; /* Höhe des Kartenstapels in der Swipe-Ansicht */
+
   /* Fokus & Bewegung */
   --focus-ring: 2px solid var(--color-accent-hover);
   --duration-fast: 150ms;
@@ -51,21 +69,28 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--color-bg);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  background: var(--color-surface-subtle);
   color: var(--color-text-primary);
   min-height: 100vh;
   display: flex;
   justify-content: center;
 }
 
+/* Inhalt auf Blaugrau, Karten bleiben weiß */
 #root {
   width: 100%;
   max-width: 480px;
   min-height: 100vh;
-  background: var(--color-surface);
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Platz für die fixierte Tab-Leiste auf dem Handy */
+@media (max-width: 639px) {
+  #root { padding-bottom: 64px; }
 }
 
 @media (min-width: 640px) {
@@ -73,12 +98,29 @@ body {
 }
 
 @media (min-width: 1024px) {
-  #root { 
-    max-width: 680px; 
-    margin: 24px 0; 
-    border-radius: var(--radius-card); 
-    min-height: calc(100vh - 48px); 
+  #root {
+    max-width: 760px;
+    margin: 24px 0;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-nav-bg);
+    overflow: clip; /* runde Ecken für Navigation und Fußleiste, ohne sticky zu brechen */
+    min-height: calc(100vh - 48px);
   }
+}
+
+/* Große Bildschirme (z. B. 24 Zoll): größere Schrift, breitere Spalte */
+@media (min-width: 1440px) {
+  :root {
+    --text-xs: 15px;
+    --text-sm: 15px;
+    --text-base: 17px;
+    --text-lg: 20px;
+    --text-xl: 26px;
+    --text-2xl: 30px;
+    --stack-height: 560px;
+  }
+
+  #root { max-width: 880px; }
 }
 
 button {
@@ -134,7 +176,7 @@ input, textarea, select {
   color: var(--color-danger);
   padding: 8px 16px;
   border-radius: var(--radius);
-  font-size: 13px;
+  font-size: var(--text-sm);
   border: 1px solid var(--color-danger);
   max-width: 90%;
   text-align: center;

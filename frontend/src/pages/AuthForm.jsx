@@ -5,29 +5,29 @@ import Icon from '../components/Icon'
 
 const styles = {
   screen:    { flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', gap: '20px' },
-  title:     { fontSize: '24px', fontWeight: '600', color: 'var(--color-text-primary)', textAlign: 'center' },
+  title:     { fontSize: 'var(--text-2xl)', fontWeight: '600', color: 'var(--color-text-primary)', textAlign: 'center' },
   tabs:      { display: 'flex', gap: '4px', background: 'var(--color-surface-subtle)', padding: '4px', borderRadius: 'var(--radius)' },
   tab: {
     padding: '8px 20px', borderRadius: 'var(--radius)', border: 'none',
-    fontSize: '14px', cursor: 'pointer', background: 'transparent', color: 'var(--color-text-secondary)',
+    fontSize: 'var(--text-base)', cursor: 'pointer', background: 'transparent', color: 'var(--color-text-secondary)',
   },
   tabActive: { background: 'var(--color-surface)', color: 'var(--color-accent-hover)', fontWeight: '600', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' },
   form:      { width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' },
   splitRow:  { display: 'flex', gap: '10px' },
   group:     { display: 'flex', flexDirection: 'column', gap: '5px', flex: 1 },
-  label:     { fontSize: '13px', color: 'var(--color-text-secondary)', fontWeight: '500' },
+  label:     { fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontWeight: '500' },
   input: {
     width: '100%', padding: '10px 12px',
     borderRadius: 'var(--radius)', border: '1px solid var(--color-border-strong)',
     background: 'var(--color-surface)', color: 'var(--color-text-primary)',
-    fontSize: '14px', outline: 'none',
+    fontSize: 'var(--text-base)', outline: 'none',
   },
   inputInvalid: { border: '2px solid var(--color-danger-text)', padding: '9px 11px' },
-  fieldError: { display: 'flex', gap: '4px', alignItems: 'flex-start', fontSize: '13px', lineHeight: '1.4', color: 'var(--color-danger-text)' },
+  fieldError: { display: 'flex', gap: '4px', alignItems: 'flex-start', fontSize: 'var(--text-sm)', lineHeight: '1.4', color: 'var(--color-danger-text)' },
   submitBtn: {
     width: '100%', padding: '12px', borderRadius: 'var(--radius)', border: 'none',
     background: 'var(--color-accent)', color: '#fff',
-    fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'background-color var(--duration-fast)',
+    fontSize: 'var(--text-base)', fontWeight: '600', cursor: 'pointer', transition: 'background-color var(--duration-fast)',
   },
 }
 

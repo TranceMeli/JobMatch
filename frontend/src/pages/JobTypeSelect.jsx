@@ -21,13 +21,13 @@ const styles = {
     boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   },
   title: {
-    fontSize: '22px',
+    fontSize: 'var(--text-xl)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
     marginBottom: '8px',
   },
   subtitle: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.6',
     marginBottom: '22px',
@@ -40,7 +40,7 @@ const styles = {
     background: 'var(--color-surface)',
     color: 'var(--color-text-primary)',
     textAlign: 'left',
-    fontSize: '15px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
   },
   active: {
@@ -49,7 +49,7 @@ const styles = {
   },
   note: {
     marginTop: '12px',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     color: 'var(--color-text-muted)',
   },
   button: {
@@ -60,7 +60,7 @@ const styles = {
     border: 'none',
     background: 'var(--color-accent)',
     color: '#fff',
-    fontSize: '15px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
   },
 }

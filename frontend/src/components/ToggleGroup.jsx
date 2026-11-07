@@ -6,7 +6,7 @@ const styles = {
     border: '1px solid var(--color-border-strong)',
     background: 'var(--color-surface)',
     color: 'var(--color-text-secondary)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     cursor: 'pointer',
     transition: 'all 0.15s',
   },

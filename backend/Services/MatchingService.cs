@@ -14,25 +14,41 @@ public sealed class MatchingService
         var applicantAnswers = Parse(applicantResponse.AnswersJson);
         var companyAnswers = Parse(companyResponse.AnswersJson);
 
+        // Persönliche Freitext-Fragen: gemeinsame Themen über alle Antworten einer Seite
+        var applicantThemes = TextThemes.Detect(PersonalApplicantKeys.Select(k => GetString(applicantAnswers, k)));
+        var companyThemes = TextThemes.Detect(PersonalCompanyKeys.Select(k => GetString(companyAnswers, k)));
+        var commonThemes = applicantThemes.Intersect(companyThemes).ToList();
+        // Dice-Koeffizient: bestraft ausführlichere Antworten weniger als Jaccard
+        var personalValue = applicantThemes.Count == 0 || companyThemes.Count == 0
+            ? 0
+            : 2d * commonThemes.Count / (applicantThemes.Count + companyThemes.Count);
+
+        // Gewichte ergeben 100: 85 % Auswahlfragen, 15 % persönliche Antworten
         var criteria = new List<Criterion>
         {
-            new("Technologien", 20, Jaccard(applicantAnswers, companyAnswers, "technologies")),
-            new("Entwicklungsbereiche", 15, Jaccard(applicantAnswers, companyAnswers, "developmentFocus")),
-            new("Arbeitsmodell", 15, WorkModel(applicantAnswers, companyAnswers)),
-            new("Einarbeitung", 10, ScaleCloseness(applicantAnswers, companyAnswers, "onboarding")),
-            new("Teamarbeit", 10, Exact(applicantAnswers, companyAnswers, "teamStyle")),
-            new("Eigenverantwortung", 10, ScaleCloseness(applicantAnswers, companyAnswers, "autonomy")),
-            new("Arbeitgeberangebot", 10, Jaccard(applicantAnswers, companyAnswers, "priorities", "offers")),
-            new("Entwicklungsmöglichkeiten", 10, Jaccard(applicantAnswers, companyAnswers, "careerDirection", "careerSupport"))
+            new("Technologien", 17, Jaccard(applicantAnswers, companyAnswers, "technologies")),
+            new("Entwicklungsbereiche", 13, Jaccard(applicantAnswers, companyAnswers, "developmentFocus")),
+            new("Arbeitsmodell", 13, WorkModel(applicantAnswers, companyAnswers)),
+            new("Einarbeitung", 8, ScaleCloseness(applicantAnswers, companyAnswers, "onboarding")),
+            new("Teamarbeit", 8, Exact(applicantAnswers, companyAnswers, "teamStyle")),
+            new("Eigenverantwortung", 8, ScaleCloseness(applicantAnswers, companyAnswers, "autonomy")),
+            new("Arbeitgeberangebot", 9, Jaccard(applicantAnswers, companyAnswers, "priorities", "offers")),
+            new("Entwicklungsmöglichkeiten", 9, Jaccard(applicantAnswers, companyAnswers, "careerDirection", "careerSupport")),
+            new("Persönliche Antworten", PersonalWeight, personalValue)
         };
 
         var score = (int)Math.Round(criteria.Sum(c => c.Weight * c.Value), MidpointRounding.AwayFromZero);
         score = Math.Clamp(score, 0, 100);
 
+        // Gemeinsame Themen aus den Freitexten bekommen einen festen Platz, sobald mindestens zwei übereinstimmen
+        var personalReason = commonThemes.Count >= 2
+            ? $"Ihr legt beide Wert auf {JoinThemes(commonThemes.Take(3).ToList())}"
+            : null;
+
         var reasons = criteria
-            .Where(c => c.Value >= 0.75)
+            .Where(c => c.Label != "Persönliche Antworten" && c.Value >= 0.75)
             .OrderByDescending(c => c.Value * c.Weight)
-            .Take(3)
+            .Take(personalReason is null ? 3 : 2)
             .Select(c => c.Label switch
             {
                 "Technologien" => "Sehr gute Übereinstimmung beim gewünschten bzw. eingesetzten Tech-Stack",
@@ -47,6 +63,8 @@ public sealed class MatchingService
             })
             .ToList();
 
+        if (personalReason is not null) reasons.Add(personalReason);
+
         if (reasons.Count == 0)
         {
             reasons.Add("Noch wenig Übereinstimmung bei den gemeinsamen Kriterien");
@@ -54,6 +72,18 @@ public sealed class MatchingService
 
         return new MatchResult(score, reasons);
     }
+
+    public const int PersonalWeight = 15;
+
+    private static readonly string[] PersonalApplicantKeys = ["motivation", "problemSolving", "expectations", "aboutYou"];
+    private static readonly string[] PersonalCompanyKeys = ["juniorReason", "support", "expectations", "culture"];
+
+    private static string JoinThemes(IReadOnlyList<string> themes) => themes.Count switch
+    {
+        0 => string.Empty,
+        1 => themes[0],
+        _ => string.Join(", ", themes.Take(themes.Count - 1)) + " und " + themes[^1]
+    };
 
     private static Dictionary<string, JsonElement> Parse(string json)
     {

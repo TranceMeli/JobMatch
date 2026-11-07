@@ -31,15 +31,28 @@ const styles = {
     marginBottom: '6px',
   },
   title: {
-    fontSize: '22px',
+    fontSize: 'var(--text-xl)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
   },
   section: {
     border: '1px solid var(--color-border)',
     borderRadius: 'var(--radius)',
-    padding: '16px 18px 0',
+    overflow: 'hidden',
     marginBottom: '14px',
+  },
+  sectionBody: { padding: '14px 18px 0' },
+  info: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'flex-start',
+    padding: '10px 12px',
+    marginBottom: '16px',
+    borderRadius: 'var(--radius)',
+    background: 'var(--color-bg)',
+    color: 'var(--color-text-secondary)',
+    fontSize: 'var(--text-sm)',
+    lineHeight: '1.55',
   },
   sectionHead: {
     width: '100%',
@@ -48,16 +61,15 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     border: 'none',
-    background: 'transparent',
-    padding: 0,
+    background: 'var(--color-section-head)',
+    padding: '12px 18px',
     textAlign: 'left',
     color: 'var(--color-text-primary)',
-    marginBottom: '14px',
   },
-  sectionTitle: { fontSize: '16px', fontWeight: '600' },
-  sectionHint: { fontSize: '13px', fontWeight: '400', color: 'var(--color-text-secondary)', marginTop: '2px' },
+  sectionTitle: { fontSize: 'var(--text-lg)', fontWeight: '600' },
+  sectionHint: { fontSize: 'var(--text-sm)', fontWeight: '400', color: 'var(--color-text-secondary)', marginTop: '2px' },
   subtitle: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.6',
     marginBottom: '24px',
@@ -69,7 +81,7 @@ const styles = {
     borderRadius: '999px',
     background: 'var(--color-accent-bg)',
     color: 'var(--color-accent)',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     fontWeight: '600',
     marginBottom: '22px',
   },
@@ -79,14 +91,14 @@ const styles = {
     borderBottom: '1px solid var(--color-border)',
   },
   question: {
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     fontWeight: '600',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.5',
     marginBottom: '7px',
   },
   answer: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-primary)',
     lineHeight: '1.6',
     whiteSpace: 'pre-wrap',
@@ -107,7 +119,7 @@ const styles = {
     border: 'none',
     background: 'var(--color-accent)',
     color: '#fff',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
   },
   secondary: {
@@ -117,7 +129,7 @@ const styles = {
     border: '1px solid var(--color-border-strong)',
     background: 'var(--color-surface)',
     color: 'var(--color-text-primary)',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
     cursor: 'pointer',
   },
@@ -127,12 +139,12 @@ const styles = {
     border: '1px solid var(--color-danger)',
     background: 'var(--color-danger-bg)',
     color: 'var(--color-danger-text)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     marginBottom: '18px',
   },
   loading: {
     color: 'var(--color-text-secondary)',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
   },
 }
 
@@ -230,7 +242,7 @@ export default function QuestionnaireOverview({
 
   const isApplicant = role === 'User'
 
-  // Freitext-Fragen sind persönliche Angaben und fließen nicht in den Match-Score ein
+  // Auswahlfragen zählen 85 %, Freitexte über erkannte Themen 15 % (siehe MatchingService)
   const scoredQuestions = questions.filter((q) => q.type !== 'text')
   const personalQuestions = questions.filter((q) => q.type === 'text')
   const answeredCount = questions.filter((q) => isAnswered(answers[q.key])).length
@@ -270,31 +282,48 @@ export default function QuestionnaireOverview({
             <section style={styles.section} aria-labelledby="scored-title">
               <div style={{ ...styles.sectionHead, cursor: 'default' }}>
                 <div>
-                  <h2 id="scored-title" style={styles.sectionTitle}>Fließt ins Matching ein</h2>
-                  <div style={styles.sectionHint}>Diese Antworten bestimmen den Match-Score.</div>
+                  <h2 id="scored-title" style={styles.sectionTitle}>Auswahlfragen</h2>
+                  <div style={styles.sectionHint}>Bestimmen 85 % des Match-Scores.</div>
                 </div>
               </div>
-              {scoredQuestions.map(renderQuestion)}
+              <div style={styles.sectionBody}>{scoredQuestions.map(renderQuestion)}</div>
             </section>
 
             {personalQuestions.length > 0 && (
               <section style={styles.section} aria-labelledby="personal-title">
-                <button
-                  type="button"
-                  style={styles.sectionHead}
-                  aria-expanded={personalOpen}
-                  aria-controls="personal-answers"
-                  onClick={() => setPersonalOpen((open) => !open)}
-                >
-                  <div>
-                    <h2 id="personal-title" style={styles.sectionTitle}>
-                      Persönliche Fragen ({personalQuestions.length})
-                    </h2>
-                    <div style={styles.sectionHint}>Nicht Teil des Match-Scores – zeigt dem Gegenüber mehr über {isApplicant ? 'dich' : 'euch'}.</div>
+                <h2 style={{ margin: 0 }}>
+                  <button
+                    type="button"
+                    style={styles.sectionHead}
+                    aria-expanded={personalOpen}
+                    aria-controls="personal-answers"
+                    onClick={() => setPersonalOpen((open) => !open)}
+                  >
+                    <span>
+                      <span id="personal-title" style={{ ...styles.sectionTitle, display: 'block' }}>
+                        Persönliche Fragen ({personalQuestions.length})
+                      </span>
+                      <span style={{ ...styles.sectionHint, display: 'block' }}>
+                        Bestimmen 15 % des Match-Scores über gemeinsame Themen.
+                      </span>
+                    </span>
+                    <Icon name={personalOpen ? 'expand_less' : 'expand_more'} size={24} />
+                  </button>
+                </h2>
+                <div id="personal-answers" hidden={!personalOpen} style={styles.sectionBody}>
+                  <div style={styles.info}>
+                    <Icon name="info" size={18} />
+                    <div>
+                      <b>So werden die Freitexte ausgewertet:</b> JobMatch sucht in den Antworten beider Seiten nach
+                      gemeinsamen Themen wie Feedback, Mentoring oder Eigeninitiative. Das passiert lokal auf dem
+                      JobMatch-Server, ohne externe Dienste. Erkannt werden nur Stichwörter, keine Bedeutung.
+                      <br />
+                      <b>Hinweis:</b> Eine Auswertung, die Texte wirklich versteht, z. B. mit einem KI-Sprachmodell,
+                      bräuchte eine externe API. Dann würden die Freitexte an diesen Anbieter übermittelt, und dafür
+                      wären ein Auftragsverarbeitungsvertrag und ein Hinweis in der Datenschutzerklärung nötig.
+                      Bitte keine Angaben zu Gesundheit, Herkunft, Religion oder ähnlich sensiblen Themen.
+                    </div>
                   </div>
-                  <Icon name={personalOpen ? 'expand_less' : 'expand_more'} size={24} />
-                </button>
-                <div id="personal-answers" hidden={!personalOpen}>
                   {personalQuestions.map(renderQuestion)}
                 </div>
               </section>

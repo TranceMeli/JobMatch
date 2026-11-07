@@ -5,13 +5,13 @@ import { getMatches } from '../api'
 const styles = {
   screen: { flex: 1, padding: '24px 20px', overflowY: 'auto' },
   title: {
-    fontSize: '20px',
+    fontSize: 'var(--text-xl)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
     marginBottom: '4px',
   },
   subtitle: {
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     color: 'var(--color-text-secondary)',
     marginBottom: '20px',
   },
@@ -40,7 +40,7 @@ const styles = {
   },
   info: { flex: 1 },
   name: {
-    fontSize: '15px',
+    fontSize: 'var(--text-base)',
     fontWeight: '600',
     color: 'var(--color-text-primary)',
     marginBottom: '2px',
@@ -49,7 +49,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     color: 'var(--color-text-secondary)',
   },
   match: {
@@ -60,14 +60,14 @@ const styles = {
     borderRadius: '20px',
     background: 'var(--color-highlight)',
     color: 'var(--color-highlight-text)',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     fontWeight: '700',
   },
   reasons: {
     marginTop: '12px',
     paddingTop: '10px',
     borderTop: '1px solid var(--color-border)',
-    fontSize: '12px',
+    fontSize: 'var(--text-xs)',
     color: 'var(--color-text-secondary)',
     lineHeight: '1.6',
   },
@@ -75,14 +75,14 @@ const styles = {
     marginTop: '12px',
     paddingTop: '10px',
     borderTop: '1px solid var(--color-border)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
     color: 'var(--color-text-secondary)',
   },
   empty: {
     textAlign: 'center',
     padding: '48px 0',
     color: 'var(--color-text-muted)',
-    fontSize: '14px',
+    fontSize: 'var(--text-base)',
     lineHeight: '2',
   },
   error: {
@@ -91,7 +91,7 @@ const styles = {
     border: '1px solid var(--color-danger)',
     background: 'var(--color-danger-bg)',
     color: 'var(--color-danger)',
-    fontSize: '13px',
+    fontSize: 'var(--text-sm)',
   },
 }
 
